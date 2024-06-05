@@ -4,26 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { loginUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext'; // Importa el contexto
+import CustomModal from '../components/CustomModal'; // Importa el componente
 
-const CustomModal: React.FC<{ visible: boolean; message: string; onClose: () => void; }> = ({ visible, message, onClose }) => {
-  return (
-    <Modal
-      transparent={true}
-      animationType="slide"
-      visible={visible}
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <Text style={[styles.modalText, { fontFamily: 'Light' }]}>{message}</Text>
-          <Pressable style={[styles.button, styles.modalButton]} onPress={onClose}>
-            <Text style={styles.buttonText}>Cerrar</Text>
-          </Pressable>
-        </View>
-      </View>
-    </Modal>
-  );
-};
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');

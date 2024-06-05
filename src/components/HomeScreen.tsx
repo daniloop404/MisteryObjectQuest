@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { useLoadFonts } from '../constants/fonts';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle, withSequence, withRepeat } from 'react-native-reanimated';
 
 type RootStackParamList = {
   Home: undefined;
@@ -13,27 +12,6 @@ type RootStackParamList = {
 const HomeScreen: React.FC = () => {
   const fontsLoaded = useLoadFonts();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  // Crea un valor compartido para controlar el tamaño del texto
-  const scale = useSharedValue(1);
-
-  // Crea un estilo animado que se actualiza con el valor compartido
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
-
-  // Función para iniciar la animación de forma continua
-  const animateText = () => {
-    scale.value = withRepeat(
-      withSequence(
-        withTiming(1.2, { duration: 1500 }), 
-        withTiming(1, { duration: 1500}) 
-      ),
-      -1 // Repite la animación indefinidamente
-    );
-  };
 
   if (!fontsLoaded) {
     return null;
@@ -46,13 +24,7 @@ const HomeScreen: React.FC = () => {
         style={styles.background}
         resizeMode="cover"
       >
-        {/* Aplica el estilo animado al Text */}
-        <Animated.Text 
-          style={[styles.title, { fontFamily: 'Dino' }, animatedStyles]}
-          onLayout={animateText} // Inicia la animación después de que el texto se haya renderizado
-        >
-          Mystery Object Quest
-        </Animated.Text>
+        <Text style={[styles.title, { fontFamily: 'Dino' }]}>Mystery Object Quest</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
           <Text style={[styles.buttonText, { fontFamily: 'Dino' }]}>Ingresar</Text>

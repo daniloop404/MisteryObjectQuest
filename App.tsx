@@ -7,6 +7,9 @@ import RegisterScreen from './src/components/RegisterScreen';
 import GameScreen from './src/components/GameScreen';
 import GameMenuScreen from './src/components/GameMenuScreen';
 import CharacterSelectionScreen from './src/components/CharacterSelectionScreen';
+import AdditionalInfoScreen from './src/components/AdditionalInfoScreen';
+import PreferencesScreen from './src/components/PreferencesScreen';
+import ProfileImageScreen from './src/components/ProfileImageScreen';
 import { RootStackParamList } from './src/constants/types';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { useLoadFonts } from './src/constants/fonts';
@@ -47,6 +50,9 @@ const GameStack = () => (
     <Stack.Screen name="GameMenu" component={GameMenuScreen} />
     <Stack.Screen name="GameScreen" component={GameScreen} />
     <Stack.Screen name="CharacterSelection" component={CharacterSelectionScreen} />
+    <Stack.Screen name="AdditionalInfo" component={AdditionalInfoScreen} />
+    <Stack.Screen name="Preferences" component={PreferencesScreen} />
+    <Stack.Screen name="ProfileImage" component={ProfileImageScreen} />
   </Stack.Navigator>
 );
 

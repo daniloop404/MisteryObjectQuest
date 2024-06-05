@@ -45,6 +45,8 @@ const RegisterScreen: React.FC = () => {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  let result: any = null;  // Declara result aquí para que esté disponible en todo el alcance del componente
+
   const handleRegister = async () => {
     if (!email || !username || !password || !confirmPassword) {
       setModalMessage("Por favor, complete todos los campos.");
@@ -58,11 +60,14 @@ const RegisterScreen: React.FC = () => {
       return;
     }
 
-    const result = await registerUser(email, password, username);
+    result = await registerUser(email, password, username);
 
-    if (result?.success) {
+    if (result?.success && result.user) {
       setModalMessage("Usuario registrado exitosamente.");
       setModalVisible(true);
+      setTimeout(() => {
+        navigation.navigate('AdditionalInfo', { userId: result.user.uid });
+      }, 5000); // Espera 5 segundos antes de navegar a la siguiente pantalla
     } else {
       setModalMessage(result?.error || 'An unknown error occurred');
       setModalVisible(true);
@@ -72,14 +77,14 @@ const RegisterScreen: React.FC = () => {
   const closeModal = () => {
     setModalVisible(false);
     if (modalMessage === "Usuario registrado exitosamente.") {
-      navigation.navigate('Login');
+      navigation.navigate('AdditionalInfo', { userId: result.user.uid });
     }
   };
 
   const handleTimeout = () => {
     if (modalMessage === "Usuario registrado exitosamente.") {
       setModalVisible(false);
-      navigation.navigate('Login');
+      navigation.navigate('AdditionalInfo', { userId: result.user.uid });
     }
   };
 
