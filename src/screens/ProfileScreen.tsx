@@ -6,13 +6,20 @@ import {
   ImageBackground, 
   Image,
   ScrollView, 
-  ActivityIndicator 
+  ActivityIndicator,
+  TouchableOpacity,
+  Button,
+  Modal
 } from 'react-native';
-import { getUserProfile } from '../services/profileService';
+import { getUserProfile, updateUserProfileImage } from '../services/profileService';
+import * as ImagePicker from 'expo-image-picker';
+import { FontAwesome } from '@expo/vector-icons';
 
 const ProfileScreen: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -24,11 +31,67 @@ const ProfileScreen: React.FC = () => {
     fetchUserProfile();
   }, []);
 
-  if (isLoading) {
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera permissions to make this work!');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
+  const handleConfirm = async () => {
+    if (selectedImage && userInfo) {
+      setIsUploading(true);
+      try {
+        const downloadURL = await updateUserProfileImage(selectedImage, userInfo.uid);
+        setUserInfo({ ...userInfo, avatar: downloadURL });
+        setSelectedImage(null);
+      } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        alert('Error al subir la imagen. Por favor, inténtalo de nuevo.');
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedImage(null);
+  };
+
+  if (isLoading || isUploading) {
     return (
-      <View style={styles.loadingContainer}>
+        <View style={styles.splashContainer}>
         <Image source={require('../../assets/splash.png')} style={styles.splashImage} />
-        <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
@@ -51,10 +114,27 @@ const ProfileScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}> 
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Perfil</Text>
-          <Image
-            source={{ uri: userInfo.avatar }}
-            style={styles.profileImage}
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: selectedImage || userInfo.avatar }}
+              style={styles.profileImage}
+            />
+            <View style={styles.cameraIconContainer}>
+              <TouchableOpacity onPress={pickImage}>
+                <FontAwesome name="photo" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={takePhoto} style={{ marginTop: 10 }}>
+                <FontAwesome name="camera" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {selectedImage && (
+            <View style={styles.buttonContainer}>
+              <Button title="Confirmar" onPress={handleConfirm} />
+              <Button title="Cancelar" onPress={handleCancel} />
+            </View>
+          )}
 
           <View style={styles.infoContainer}>
             <Text style={styles.label}>Nombre de usuario:</Text>
@@ -149,11 +229,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000', 
   },
+  splashContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   splashImage: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    position: 'absolute', // Para que la imagen quede detrás del ActivityIndicator
   },
   scrollContent: {
     flexGrow: 1,
@@ -161,7 +245,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 32,
     paddingBottom: 32, // Añade padding al contenido para evitar que quede pegado a los bordes
-  }
+  },
+  imageContainer: {
+    position: 'relative',
+    marginBottom: 20,
+  },
+  cameraIconContainer: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 15,
+    padding: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginBottom: 20,
+  },
+  
 });
 
 export default ProfileScreen;
