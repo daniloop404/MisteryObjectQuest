@@ -3,36 +3,8 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, ImageBackground, M
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { registerUser } from '../services/authService';
+import CustomModal from '../components/CustomModal'; // Importa el componente
 
-const CustomModal: React.FC<{ visible: boolean; message: string; onClose: () => void; onTimeout: () => void }> = ({ visible, message, onClose, onTimeout }) => {
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (visible) {
-      timer = setTimeout(() => {
-        onTimeout();
-      }, 5000);
-    }
-    return () => clearTimeout(timer);
-  }, [visible, onTimeout]);
-
-  return (
-    <Modal
-      transparent={true}
-      animationType="slide"
-      visible={visible}
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <Text style={[styles.modalText, { fontFamily: 'Light' }]}>{message}</Text>
-          <Pressable style={[styles.button, styles.modalButton]} onPress={onClose}>
-            <Text style={styles.buttonText}>Cerrar</Text>
-          </Pressable>
-        </View>
-      </View>
-    </Modal>
-  );
-};
 
 const RegisterScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -44,8 +16,6 @@ const RegisterScreen: React.FC = () => {
   const [modalMessage, setModalMessage] = useState('');
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  let result: any = null;  // Declara result aquí para que esté disponible en todo el alcance del componente
 
   const handleRegister = async () => {
     if (!email || !username || !password || !confirmPassword) {
@@ -60,14 +30,11 @@ const RegisterScreen: React.FC = () => {
       return;
     }
 
-    result = await registerUser(email, password, username);
+    const result = await registerUser(email, password, username);
 
-    if (result?.success && result.user) {
+    if (result?.success) {
       setModalMessage("Usuario registrado exitosamente.");
       setModalVisible(true);
-      setTimeout(() => {
-        navigation.navigate('AdditionalInfo', { userId: result.user.uid });
-      }, 5000); // Espera 5 segundos antes de navegar a la siguiente pantalla
     } else {
       setModalMessage(result?.error || 'An unknown error occurred');
       setModalVisible(true);
@@ -77,14 +44,14 @@ const RegisterScreen: React.FC = () => {
   const closeModal = () => {
     setModalVisible(false);
     if (modalMessage === "Usuario registrado exitosamente.") {
-      navigation.navigate('AdditionalInfo', { userId: result.user.uid });
+      navigation.navigate('Login');
     }
   };
 
   const handleTimeout = () => {
     if (modalMessage === "Usuario registrado exitosamente.") {
       setModalVisible(false);
-      navigation.navigate('AdditionalInfo', { userId: result.user.uid });
+      navigation.navigate('Login');
     }
   };
 
@@ -138,6 +105,7 @@ const RegisterScreen: React.FC = () => {
     </ImageBackground>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

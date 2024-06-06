@@ -4,10 +4,8 @@ export type RootStackParamList = {
   Register: undefined;
   GameScreen: undefined;
   GameMenu: undefined;
-  Auth: undefined;
-  Game: undefined;
+  AuthStack: undefined; // Cambiado de 'Auth' a 'AuthStack'
+  GameStack: undefined; // Cambiado de 'Game' a 'GameStack'
   CharacterSelection: undefined;
-  AdditionalInfo: { userId: string };
-  Preferences: { userId: string, realName: string, age: string, gender: string };
-  ProfileImage: { userId: string, realName?: string, age?: string, gender?: string, hobbies?: string, favoriteGenres?: string, favoriteMusic?: string, favoriteColor?: string, favoriteActivities?: string };
+  Profile: undefined;
 };

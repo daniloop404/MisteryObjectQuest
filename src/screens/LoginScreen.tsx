@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { loginUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext'; // Importa el contexto
-import CustomModal from '../components/CustomModal'; // Importa el componente
+import CustomModal from '../components/CustomModal';
 
 
 const LoginScreen: React.FC = () => {

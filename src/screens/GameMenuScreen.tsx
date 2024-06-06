@@ -4,7 +4,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { logoutUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
-import { pushCharacter } from '../services/pushCharacterService'; 
+import { pushCharacter } from '../services/pushCharacterService'; // Importa el servicio
 
 const GameMenuScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -35,14 +35,16 @@ const GameMenuScreen: React.FC = () => {
         style={styles.background}
         resizeMode="cover"
       >
-        <Text style={[styles.title, { fontFamily: 'Dino' }]}>Mystery Object Quest</Text>
+        <Text style={[styles.title, { fontFamily: 'Dino' }]}>
+          Mystery Object Quest
+        </Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CharacterSelection')}>
           <Text style={styles.buttonText}>Jugar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => alert('Instrucciones')}>
           <Text style={styles.buttonText}>Instrucciones</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.profileButton}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.buttonText}>Perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleAddCharacter}>
@@ -50,7 +52,7 @@ const GameMenuScreen: React.FC = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleLogout}>
           <Text style={styles.buttonText}>Cerrar Sesión</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
       </ImageBackground>
     </View>
   );
@@ -95,22 +97,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 25,
     fontFamily: 'Dino',
-  },
-  profileButton: { // New styles for the profile button
-    backgroundColor: '#C44E4E',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-    marginVertical: 10,
-    elevation: 12,
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    width: '70%',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 20, // Position it at the bottom
   },
 });
 

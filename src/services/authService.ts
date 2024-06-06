@@ -3,25 +3,40 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const registerUser = async (email: string, password: string, username: string) => {
   try {
+    // Comprobar si el nombre de usuario ya está en uso
     const usernameSnapshot = await firebase.database().ref('usuarios').orderByChild('username').equalTo(username).once('value');
     if (usernameSnapshot.exists()) {
       return { success: false, error: 'El nombre de usuario ya está en uso.' };
     }
 
+    // Crear el usuario con correo y contraseña
     const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
     const user = userCredential.user;
 
     if (user) {
+      // Guardar datos adicionales en Firebase Realtime Database
       await firebase.database().ref(`usuarios/${user.uid}`).set({
         uid: user.uid,
         email: email,
         username: username,
-        puntuacionMaxima: 0
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/otros%20assets%2Fdefault_avatar.png?alt=media&token=ac815a19-02bc-41bf-83c3-08c0bb80279e',
+        informacionAdicional: {
+          nombreReal: '',
+          edad: '',
+          genero: '',
+        },
+        interesesYPreferencias: {
+          hobbies: '',
+          generosFavoritos: '',
+          musicaFavorita: '',
+          colorFavorito: '',
+          actividadesFavoritas: '',
+        }
       });
       return { success: true, user };
     }
   } catch (error) {
-    if (error instanceof Error && (error as any).code) {
+    if (error instanceof Error && (error as any).code) { 
       let errorMessage = 'An unknown error occurred';
 
       switch ((error as any).code) {

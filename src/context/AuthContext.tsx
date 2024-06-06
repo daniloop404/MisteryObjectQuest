@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = () => {
     setIsLoggedIn(true); 
-    console.log("Usuario autenticado:", true); // Asegúrate de loguear el valor correcto
+    console.log("Usuario autenticado:", true);
   };
 
   const logout = () => {
