@@ -10,6 +10,7 @@ export const useLoadFonts = () => {
     'Forte': require('../../assets/fonts/Forte.ttf'),
     'Dino': require('../../assets/fonts/Dino.ttf'),
     'Asquire': require('../../assets/fonts/Asquire.otf'),
+    'Lemon': require('../../assets/fonts/Lemon.otf'),
   });
 
   useEffect(() => {

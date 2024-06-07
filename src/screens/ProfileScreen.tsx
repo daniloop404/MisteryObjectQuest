@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 24,
     color: '#C44E4E',
-    fontFamily: 'Asquire',
+    fontFamily: 'Dino',
     marginBottom: 10,
   },
   loadingContainer: {

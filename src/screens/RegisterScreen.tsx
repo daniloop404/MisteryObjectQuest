@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 25,
-    fontFamily: 'Light', 
   },
   button: {
     backgroundColor: '#C44E4E',

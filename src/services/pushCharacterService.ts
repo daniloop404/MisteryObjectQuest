@@ -4,6 +4,7 @@ export const pushCharacter = async () => {
   const character = {
     name: 'Victoria, la Detectiva Paranormal',
     image: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fcover.png?alt=media&token=9bd0dd36-ab4b-480c-b490-357437fa9805',
+    loadingImage: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2FloadingImage.png?alt=media&token=05211750-2afe-4a3e-8cca-e3997869212d',
     description: 'Victoria es una detective privada con una particularidad: puede interactuar con espíritus. Junto a su compañero espiritual Oliver, resuelve misterios tanto del mundo de los vivos como del más allá.',
     expressions: {
       expressionless: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fexpressionless.png?alt=media&token=240c29b7-162f-4b2c-a290-6636a5994552',
@@ -14,6 +15,15 @@ export const pushCharacter = async () => {
       disappointed: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fdisappointed.png?alt=media&token=cb1a925b-053f-4c11-a902-b86d8c50f7ed',
       sad: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fsad.png?alt=media&token=30d8e972-0c95-495c-93ce-340783c5bc80',
     },
+    game_expressions: {
+      greeting1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_greeting1%20(1).png?alt=media&token=8010b722-3a9e-4c21-ab4d-46498d3a1c99',
+      greeting2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_greeting2%20(1).png?alt=media&token=65368ac4-7c22-45d6-b737-4edcdcb6623e',
+      goodbye:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_goodbye1%20(1).png?alt=media&token=b4866cc6-0657-4ca4-a86a-70fb32515a80',
+      incorrect1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_incorrect1%20(1).png?alt=media&token=af6a7aee-a6cd-407a-9a47-241a92e61f00',
+      incorrect2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_incorrect2%20(1).png?alt=media&token=d814463d-9d3b-4391-aa2e-00e4a978f2cb',
+      correct1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_correct1%20(1).png?alt=media&token=6e4e766a-f2fb-45fc-abab-9206d4a71927',
+      correct2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_correct2%20(1).png?alt=media&token=9d24fc19-b2bb-4e2d-a682-2984d7aebfd5'
+    },  
     personality: {
       intelligent: 'Extremadamente inteligente y astuta, capaz de resolver los casos más complicados gracias a su mente analítica y detallista.',
       isolated: 'Su don la ha llevado a aislarse de las personas. Aunque parece fría en su exterior, es una persona muy amable y empática con quienes logran conocerla de verdad.',
@@ -22,6 +32,7 @@ export const pushCharacter = async () => {
     appearance: 'De mirada penetrante y enigmática, Victoria posee una belleza serena acentuada por su largo cabello azul oscuro y unos cautivadores ojos naranja que parecen estar brillando incluso en la oscuridad. Su expresión seria denota una profunda concentración, como si estuviera descifrando constantemente enigmas invisibles.',
     attire: 'Siempre impecable con un atuendo que refleja su personalidad meticulosa y elegante. Un abrigo largo color beige sobre una camisa blanca y corbata oscura, complementados con pantalones de vestir y un sombrero de ala ancha que proyecta una sombra misteriosa sobre su rostro. Usualmente Oliver está en su espalda.',
     color: '#0000FF', // Azul
+    age: 25,
     backstory: {
       earlyLife: 'Desde joven, Victoria siempre tuvo un agudo sentido de la observación y una mente inquisitiva, lo que la llevó a convertirse en detective.',
       discovery: 'A los 20 años, durante su época en la universidad, descubrió su habilidad única de ver y comunicarse con espíritus. Este don la impactó profundamente y complicó su vida académica, provocando el rechazo de sus compañeros y la incomprensión de su madre. Sin embargo, su abuela, quien también poseía un don similar, aunque no tan poderoso, la ayudó a comprender y aceptar sus habilidades.',

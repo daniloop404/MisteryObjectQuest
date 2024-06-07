@@ -2,19 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import { Character, getCharacters } from '../services/characterService';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../constants/types';
 
 const { width, height } = Dimensions.get('window');
+
+type CharacterSelectionScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CharacterSelection'>;
 
 const CharacterSelectionScreen: React.FC = () => {
   const [chars, setChars] = useState<Character[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation<CharacterSelectionScreenNavigationProp>();
 
   useEffect(() => {
     const fetchCharacters = async () => {
       const characters = await getCharacters();
       setChars(characters);
-      setIsLoading(false); // Una vez cargados los personajes, cambiar el estado
+      setIsLoading(false);
     };
 
     fetchCharacters();
@@ -59,7 +65,10 @@ const CharacterSelectionScreen: React.FC = () => {
               <Text style={[styles.name, { color: char.color }]}>{char.name}</Text>
               <Image source={{ uri: char.image }} style={styles.characterImage} />
               <Text style={styles.description}>{char.description}</Text>
-              <TouchableOpacity style={[styles.chooseButton, { backgroundColor: char.color }]}>
+              <TouchableOpacity
+                style={[styles.chooseButton, { backgroundColor: char.color }]}
+                onPress={() => navigation.navigate('GameScreen', { character: char })}
+              >
                 <Text style={styles.buttonText}>Elegir</Text>
               </TouchableOpacity>
             </View>
@@ -68,10 +77,10 @@ const CharacterSelectionScreen: React.FC = () => {
       </ScrollView>
       <View style={styles.navigation}>
         <TouchableOpacity onPress={() => handleSwipe('right')} disabled={currentIndex === 0}>
-          <FontAwesome name="arrow-left" size={40} color={'#fff'} style={styles.iconShadow} /> 
+          <FontAwesome name="arrow-left" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleSwipe('left')} disabled={currentIndex === chars.length - 1}>
-          <FontAwesome name="arrow-right" size={40} color={'#fff'} style={styles.iconShadow} /> 
+          <FontAwesome name="arrow-right" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -156,7 +165,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Dino',
+    fontFamily: 'Asquire',
   },
   navigation: {
     flexDirection: 'row',

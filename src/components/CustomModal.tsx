@@ -36,7 +36,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <Text style={[styles.modalText, { fontFamily: 'Light' }]}>{message}</Text>
+          <Text style={styles.modalText}>{message}</Text>
           <Pressable style={[styles.button, styles.modalButton]} onPress={onClose}>
             <Text style={styles.buttonText}>Cerrar</Text>
           </Pressable>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '80%',
+    width: '90%',
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     textAlign: 'center',
-    fontFamily: 'Dino',
   },
   button: {
     backgroundColor: '#C44E4E',
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 25,
-    fontFamily: 'Dino',
+    fontFamily: 'Asquire',
   },
   modalButton: {
     width: '60%',

@@ -1,11 +1,13 @@
+import { Character } from '../services/characterService';
+
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Register: undefined;
-  GameScreen: undefined;
+  GameScreen: { character: Character }; // Actualizar para aceptar un parámetro de personaje
   GameMenu: undefined;
-  AuthStack: undefined; // Cambiado de 'Auth' a 'AuthStack'
-  GameStack: undefined; // Cambiado de 'Game' a 'GameStack'
+  AuthStack: undefined;
+  GameStack: undefined; 
   CharacterSelection: undefined;
   Profile: undefined;
 };

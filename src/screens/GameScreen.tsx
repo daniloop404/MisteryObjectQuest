@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { Character } from '../services/characterService';
+import { RootStackParamList } from '../constants/types'; // Asegúrate de importar RootStackParamList desde el archivo correcto
+
+type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
 const GameScreen: React.FC = () => {
   const [hint, setHint] = useState('');
   const [lives, setLives] = useState(3);
   const navigation = useNavigation();
+  const route = useRoute<GameScreenRouteProp>();
+  const { character } = route.params;
 
   const handleLogout = () => {
     // Aquí iría la lógica para desloguearse
@@ -26,19 +32,19 @@ const GameScreen: React.FC = () => {
       resizeMode="cover"
     >
       <View style={styles.overlay} />
-      <View style={styles.innerContainer}> 
-        <Text style={styles.characterName}>Elena</Text>
+      <View style={styles.innerContainer}>
+        <Text style={[styles.characterName, { color: character.color }]}>{character.name}</Text>
         <View style={styles.characterContainer}>
           <Image 
-            source={require('../../assets/images/characters/charactertest.png')} 
+            source={require('../../assets/images/loadingImage.png')} 
             style={styles.characterImage}
           />
           <Text style={styles.characterDialogue}>
-            "¡Hola, aventurero! Soy Elena, lista para una nueva expedición contigo."
+            "¡Hola, aventurero! Soy {character.name}, lista para una nueva expedición contigo."
           </Text>
         </View>
         <View style={styles.hintContainer}>
-          <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
+          <TouchableOpacity style={[styles.hintButton, { backgroundColor: character.color }]} onPress={handleHint}>
             <Text style={styles.buttonText}>Pista</Text>
           </TouchableOpacity>
           <Text style={styles.hintText}>{hint}</Text>
@@ -53,12 +59,12 @@ const GameScreen: React.FC = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <TouchableOpacity style={styles.submitButton} onPress={() => console.log('Respuesta enviada')}>
+          <TouchableOpacity style={[styles.submitButton, { backgroundColor: character.color }]} onPress={() => console.log('Respuesta enviada')}>
             <Text style={styles.buttonText}>Enviar</Text>
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Escribe tu respuesta aquí..."
+            placeholder="Escribe la palabra descrita..."
             placeholderTextColor="#999"
           />
         </View>
@@ -151,7 +157,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 25,
-    fontFamily: 'Light', // Aplica la fuente Light aquí
   },
   submitButton: {
     backgroundColor: '#4E9C44',
@@ -162,8 +167,7 @@ const styles = StyleSheet.create({
     elevation: 3, // Agrega sombra para elevar el botón
   },
   livesText: {
-    fontSize: 22,
-    fontFamily: 'Light', // Aplica la fuente Light aquí
+    fontSize: 22, // Aplica la fuente Light aquí
     marginVertical: 10,
   },
   scoreContainer: {
@@ -174,11 +178,9 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     fontSize: 20,
-    fontFamily: 'Light', // Aplica la fuente Light aquí
   },
   timeText: {
     fontSize: 20,
-    fontFamily: 'Light', // Aplica la fuente Light aquí
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Dino', // Aplica la fuente Light aquí
+    fontFamily: 'Asquire', // Aplica la fuente Light aquí
   },
 });
 
