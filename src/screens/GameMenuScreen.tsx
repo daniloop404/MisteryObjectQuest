@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 25,
-    fontFamily: 'Dino',
+    fontFamily: 'Asquire',
   },
 });
 

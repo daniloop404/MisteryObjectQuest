@@ -92,7 +92,7 @@ const RegisterScreen: React.FC = () => {
           secureTextEntry
         />
         <TouchableOpacity style={[styles.button, styles.shadow]} onPress={handleRegister}>
-          <Text style={[styles.buttonText, { fontFamily: 'Dino' }]}>Registrar</Text> 
+          <Text style={[styles.buttonText, { fontFamily: 'Asquire' }]}>Registrar</Text> 
         </TouchableOpacity>
       </View>
 
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 25,
-    fontFamily: 'Dino', 
+    fontFamily: 'Asquire', 
   },
   shadow: { 
     elevation: 12,
@@ -168,12 +168,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: 'center',
-    fontFamily: 'Dino', // Asegúrate de que el texto del modal tenga la misma fuente
   },
   modalButton: {
     width: '60%',

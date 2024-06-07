@@ -67,7 +67,7 @@ const LoginScreen: React.FC = () => {
           secureTextEntry
         />
         <TouchableOpacity style={[styles.button, styles.shadow]} onPress={handleLogin}>
-          <Text style={[styles.buttonText, { fontFamily: 'Dino' }]}>Ingresar</Text> 
+          <Text style={[styles.buttonText, { fontFamily: 'Asquire' }]}>Ingresar</Text> 
         </TouchableOpacity>
       </View>
 

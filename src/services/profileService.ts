@@ -44,3 +44,75 @@ export const updateUserProfileImage = async (imageUri: string, userId: string): 
       throw error;
     }
   };
+  export const updateUsername = async (newUsername: string): Promise<void> => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (!userToken) {
+        throw new Error('User not logged in');
+      }
+  
+      // Obtener el nombre de usuario actual
+      const userSnapshot = await firebase.database().ref(`usuarios/${userToken}`).once('value');
+      const currentUsername = userSnapshot.val().username;
+  
+      // Verificar si el nuevo nombre de usuario ya está en uso, 
+      // solo si es diferente al nombre de usuario actual
+      if (newUsername !== currentUsername) { 
+        const usersSnapshot = await firebase.database().ref('usuarios').orderByChild('username').equalTo(newUsername).once('value');
+        if (usersSnapshot.exists()) {
+          throw new Error('El nombre de usuario ya está en uso. Por favor, elige otro.');
+        }
+      }
+  
+      // Actualizar el nombre de usuario directamente en el usuario
+      await firebase.database().ref(`usuarios/${userToken}`).update({ username: newUsername }); 
+  
+    } catch (error) {
+      console.error('Error al actualizar el nombre de usuario:', error);
+      throw error;
+    }
+  };
+  export const updateUserProfileField = async (field: string, newValue: string): Promise<void> => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (!userToken) {
+        throw new Error('User not logged in');
+      }
+  
+      // Verificar si el nuevo nombre de usuario ya está en uso (opcional, solo para "username")
+      if (field === 'username') {
+        const usersSnapshot = await firebase.database().ref('usuarios').orderByChild(field).equalTo(newValue).once('value');
+        if (usersSnapshot.exists()) {
+          throw new Error(`El ${field} '${newValue}' ya está en uso. Por favor, elige otro.`);
+        }
+      }
+  
+      // Actualizar el campo dentro de "informacionAdicional"
+      await firebase.database().ref(`usuarios/${userToken}/informacionAdicional`).update({ [field]: newValue }); 
+  
+    } catch (error) {
+      console.error(`Error al actualizar el ${field} del perfil:`, error);
+      throw error;
+    }
+    
+  };
+  export const updateUserProfilePreferences = async (
+    field: string,
+    newValue: string
+  ): Promise<void> => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (!userToken) {
+        throw new Error('User not logged in');
+      }
+  
+      // Actualizar el campo dentro de "interesesYPreferencias"
+      await firebase
+        .database()
+        .ref(`usuarios/${userToken}/interesesYPreferencias`)
+        .update({ [field]: newValue });
+    } catch (error) {
+      console.error(`Error al actualizar el ${field} del perfil:`, error);
+      throw error;
+    }
+  };

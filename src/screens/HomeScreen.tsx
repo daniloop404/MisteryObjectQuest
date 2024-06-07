@@ -29,10 +29,10 @@ const HomeScreen: React.FC = () => {
         </Text>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-          <Text style={[styles.buttonText, { fontFamily: 'Dino' }]}>Ingresar</Text>
+          <Text style={[styles.buttonText, { fontFamily: 'Asquire' }]}>Ingresar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
-          <Text style={[styles.buttonText, { fontFamily: 'Dino' }]}>Registro</Text>
+          <Text style={[styles.buttonText, { fontFamily: 'Asquire' }]}>Registro</Text>
         </TouchableOpacity>
       </ImageBackground>
     </View>

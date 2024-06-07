@@ -4,17 +4,17 @@ import {
   Text, 
   View, 
   ImageBackground, 
-  Image,
   ScrollView, 
-  ActivityIndicator,
-  TouchableOpacity,
+  Image,
   Button,
+  TouchableOpacity,
   Modal
 } from 'react-native';
 import { getUserProfile, updateUserProfileImage } from '../services/profileService';
-import * as ImagePicker from 'expo-image-picker';
-import { FontAwesome } from '@expo/vector-icons';
-
+import AvatarSection from '../components/AvatarSection'; // Importa el nuevo componente
+import UserCredentials from '../components/UserCredentials'; // Importa el nuevo componente
+import AdditionalInfo from '../components/AdditionalInfo';
+import InterestsAndPreferences from '../components/InterestsAndPreferences';
 const ProfileScreen: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,43 +30,6 @@ const ProfileScreen: React.FC = () => {
 
     fetchUserProfile();
   }, []);
-
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera permissions to make this work!');
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0].uri);
-    }
-  };
 
   const handleConfirm = async () => {
     if (selectedImage && userInfo) {
@@ -90,7 +53,7 @@ const ProfileScreen: React.FC = () => {
 
   if (isLoading || isUploading) {
     return (
-        <View style={styles.splashContainer}>
+      <View style={styles.splashContainer}>
         <Image source={require('../../assets/splash.png')} style={styles.splashImage} />
       </View>
     );
@@ -111,67 +74,30 @@ const ProfileScreen: React.FC = () => {
       resizeMode="cover"
     >
       <View style={styles.overlay} />
-      <ScrollView contentContainerStyle={styles.scrollContent}> 
+      <ScrollView contentContainerStyle={styles.scrollContent}
+      style={{ width: '100%' }} 
+      >
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Perfil</Text>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: selectedImage || userInfo.avatar }}
-              style={styles.profileImage}
-            />
-            <View style={styles.cameraIconContainer}>
-              <TouchableOpacity onPress={pickImage}>
-                <FontAwesome name="photo" size={24} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={takePhoto} style={{ marginTop: 10 }}>
-                <FontAwesome name="camera" size={24} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
 
-          {selectedImage && (
-            <View style={styles.buttonContainer}>
-              <Button title="Confirmar" onPress={handleConfirm} />
-              <Button title="Cancelar" onPress={handleCancel} />
-            </View>
-          )}
+          <AvatarSection
+            userInfo={userInfo}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            handleConfirm={handleConfirm}
+            handleCancel={handleCancel}
+          />
 
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>Nombre de usuario:</Text>
-            <Text style={styles.value}>{userInfo.username}</Text>
-            <Text style={styles.label}>Correo:</Text>
-            <Text style={styles.value}>{userInfo.email}</Text>
-          </View>
+          <UserCredentials username={userInfo.username} email={userInfo.email} />
 
-          <View style={styles.infoContainer}>
-            <Text style={styles.subtitle}>Información Adicional</Text>
-            <Text style={styles.label}>Nombre Real:</Text>
-            <Text style={styles.value}>{userInfo.informacionAdicional.nombreReal}</Text>
-            <Text style={styles.label}>Edad:</Text>
-            <Text style={styles.value}>{userInfo.informacionAdicional.edad}</Text>
-            <Text style={styles.label}>Género:</Text>
-            <Text style={styles.value}>{userInfo.informacionAdicional.genero}</Text>
-          </View>
+          <AdditionalInfo informacionAdicional={userInfo.informacionAdicional} />
 
-          <View style={styles.infoContainer}>
-            <Text style={styles.subtitle}>Intereses y Preferencias</Text>
-            <Text style={styles.label}>Hobbies:</Text>
-            <Text style={styles.value}>{userInfo.interesesYPreferencias.hobbies}</Text>
-            <Text style={styles.label}>Géneros de Películas/Libros Favoritos:</Text>
-            <Text style={styles.value}>{userInfo.interesesYPreferencias.generosFavoritos}</Text>
-            <Text style={styles.label}>Música Favorita:</Text>
-            <Text style={styles.value}>{userInfo.interesesYPreferencias.musicaFavorita}</Text>
-            <Text style={styles.label}>Color Favorito:</Text>
-            <Text style={styles.value}>{userInfo.interesesYPreferencias.colorFavorito}</Text>
-            <Text style={styles.label}>Actividades Favoritas:</Text>
-            <Text style={styles.value}>{userInfo.interesesYPreferencias.actividadesFavoritas}</Text>
-          </View>
+          <InterestsAndPreferences interesesYPreferencias={userInfo.interesesYPreferencias} />
         </View>
       </ScrollView>
     </ImageBackground>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -196,12 +122,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Dino',
     marginBottom: 20,
   },
-  profileImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    marginBottom: 20,
-  },
   label: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -220,7 +140,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 24,
     color: '#C44E4E',
-    fontFamily: 'Dino',
+    fontFamily: 'Asquire',
     marginBottom: 10,
   },
   loadingContainer: {
@@ -246,25 +166,6 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingBottom: 32, // Añade padding al contenido para evitar que quede pegado a los bordes
   },
-  imageContainer: {
-    position: 'relative',
-    marginBottom: 20,
-  },
-  cameraIconContainer: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 15,
-    padding: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginBottom: 20,
-  },
-  
 });
 
 export default ProfileScreen;

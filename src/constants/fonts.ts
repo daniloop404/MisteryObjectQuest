@@ -9,7 +9,7 @@ export const useLoadFonts = () => {
     'Happy': require('../../assets/fonts/Happy.ttf'),
     'Forte': require('../../assets/fonts/Forte.ttf'),
     'Dino': require('../../assets/fonts/Dino.ttf'),
-    // Agrega más fuentes según sea necesario
+    'Asquire': require('../../assets/fonts/Asquire.otf'),
   });
 
   useEffect(() => {
