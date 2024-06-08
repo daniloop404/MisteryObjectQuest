@@ -4,10 +4,10 @@ export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Register: undefined;
-  GameScreen: { character: Character }; // Actualizar para aceptar un parámetro de personaje
+  GameScreen: { character: Character };
   GameMenu: undefined;
   AuthStack: undefined;
-  GameStack: undefined; 
+  GameStack: undefined;
   CharacterSelection: undefined;
   Profile: undefined;
 };

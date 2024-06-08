@@ -8,7 +8,7 @@ import GameScreen from './src/screens/GameScreen';
 import GameMenuScreen from './src/screens/GameMenuScreen';
 import CharacterSelectionScreen from './src/screens/CharacterSelectionScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import { RootStackParamList } from './src/constants/types';
+import { RootStackParamList } from './src/constants/types'; // Asegúrate de que esta ruta es correcta
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { useLoadFonts } from './src/constants/fonts';
 import { View, ActivityIndicator } from 'react-native';

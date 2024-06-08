@@ -2,7 +2,7 @@ import { firebase } from "../constants/firebaseConfig";
 
 export const pushCharacter = async () => {
   const character = {
-    name: 'Victoria, la Detectiva Paranormal',
+    name: 'Victoria',
     image: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fcover.png?alt=media&token=9bd0dd36-ab4b-480c-b490-357437fa9805',
     loadingImage: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2FloadingImage.png?alt=media&token=05211750-2afe-4a3e-8cca-e3997869212d',
     description: 'Victoria es una detective privada con una particularidad: puede interactuar con espíritus. Junto a su compañero espiritual Oliver, resuelve misterios tanto del mundo de los vivos como del más allá.',
@@ -67,7 +67,30 @@ export const pushCharacter = async () => {
         'Oliver ha sido mi compañero desde que descubrí mis habilidades. Su naturaleza traviesa me recuerda que, incluso en la oscuridad, siempre hay lugar para la luz y la alegría.',
         'Cada caso es un rompecabezas, y cada pieza encontrada es un pequeño triunfo. Pero la verdadera recompensa es ayudar a los espíritus a encontrar la paz.'
       ]
-    }
+    },
+    specificWords:[
+    "detective",
+    "hermano",
+    "espíritu",
+    "fantasma",
+    "misterio",
+    "enigma",
+    "evidencia",
+    "pista",
+    "caso",
+    "solución",
+    "culpable",
+    "inocente",
+    "interrogar",
+    "investiga",
+    "paranormal",
+    "sobrenatural",
+    "oculto",
+    "invisible",
+    "verdad",
+    "justicia"
+    ]
+
   };
 
   try {

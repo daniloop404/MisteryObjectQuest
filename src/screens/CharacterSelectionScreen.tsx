@@ -79,6 +79,9 @@ const CharacterSelectionScreen: React.FC = () => {
         <TouchableOpacity onPress={() => handleSwipe('right')} disabled={currentIndex === 0}>
           <FontAwesome name="arrow-left" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('GameMenu')}>
+          <Text style={styles.buttonText}>Salir</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => handleSwipe('left')} disabled={currentIndex === chars.length - 1}>
           <FontAwesome name="arrow-right" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
@@ -132,8 +135,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   characterImage: {
-    width: 400,
-    height: 400,
+    width: 350,
+    height: 350,
     resizeMode: 'contain',
     borderRadius: 10,
   },
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Dino',
   },
   description: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
     marginHorizontal: 20,
     marginTop: 10,
@@ -169,12 +172,22 @@ const styles = StyleSheet.create({
   },
   navigation: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     width: '80%',
     marginTop: 20,
     marginBottom: 20,
   },
   iconShadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  logoutButton: {
+    backgroundColor: '#C44E4E',
+    padding: 10,
+    borderRadius: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
