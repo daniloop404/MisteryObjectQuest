@@ -1,86 +1,112 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+type GamePhase = 'loading' | 'greeting' | 'guessing' | 'success' | 'failure' | 'farewell' ;
 
 interface GameContextType {
   lives: number;
   score: number;
   timeRemaining: number;
-  // ... otras variables que necesites ...
+  phase: GamePhase;
   startNewGame: () => void;
-  // ... otras funciones que necesites ...
+  startGreeting: () => void;
+  startGuessing: () => void;
+  handleSuccess: () => void;
+  handleFailure: () => void;
 }
+
 interface Props {
-    children: React.ReactNode;
-  }
+  children: React.ReactNode;
+}
+
 const GameContext = createContext<GameContextType | null>(null);
 
-const GameProvider: React.FC<Props> = ({ children }) => { 
+const GameProvider: React.FC<Props> = ({ children }) => {
   const [lives, setLives] = useState(3);
   const [score, setScore] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(30);
+  const [phase, setPhase] = useState<GamePhase>('loading');
 
-  // ... otras variables de estado ...
-
-  const startTimer = useCallback(() => { 
-    let timerId: NodeJS.Timeout; // Cambiado a timerId
+  const startTimer = useCallback(() => {
+    let timerId: NodeJS.Timeout;
 
     if (timeRemaining <= 0) {
-      return; // No hacer nada si el tiempo ya es 0 o menor
+      return;
     }
 
     timerId = setTimeout(() => {
       if (timeRemaining > 0) {
         setTimeRemaining(timeRemaining - 1);
       } else {
-        // Manejar fin del tiempo:
-        if (lives > 0) { 
+        if (lives > 0) {
           setLives(lives - 1);
-          setTimeRemaining(30); // Reiniciar temporizador
+          setTimeRemaining(30);
         } else {
-          // Fin del juego (vidas = 0)
-          // ... Implementa la lógica de fin del juego aquí ...
+          setPhase('farewell');
         }
       }
     }, 1000);
 
-    return () => clearTimeout(timerId); // Devolver la función para limpiar el temporizador
-  }, [timeRemaining, lives]); 
+    return () => clearTimeout(timerId);
+  }, [timeRemaining, lives]);
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout; 
-  
-    if (timeRemaining <= 0) {
-      if (lives > 0) { 
-        setLives(lives - 1);
-        setTimeRemaining(30); // Reiniciar timeRemaining aquí
-      } else {
-        // Fin del juego (vidas = 0)
-        // ... Implementa la lógica de fin del juego aquí ...
-      }
-    }
-  
-    if (timeRemaining > 0) { // Iniciar el temporizador solo si timeRemaining > 0
+    let timerId: NodeJS.Timeout;
+
+    if (timeRemaining > 0 && phase === 'guessing') {
       timerId = setTimeout(() => {
-        setTimeRemaining(timeRemaining - 1); 
+        setTimeRemaining(timeRemaining - 1);
       }, 1000);
     }
-  
-    return () => clearTimeout(timerId); 
-  }, [timeRemaining, lives]);
+
+    return () => clearTimeout(timerId);
+  }, [timeRemaining, phase]);
+
   const startNewGame = () => {
     setLives(3);
     setScore(0);
     setTimeRemaining(30);
-    // ... reiniciar otras variables ...
+    setPhase('greeting');
   };
 
-  // ... otras funciones del contexto ...
+  const startGreeting = () => {
+    setPhase('greeting');
+    setTimeout(() => {
+      setPhase('guessing');
+      setTimeRemaining(30);
+    }, 10000);
+  };
+
+  const startGuessing = () => {
+    setPhase('guessing');
+    setTimeRemaining(30);
+  };
+
+  const handleSuccess = () => {
+    setScore(score + 1);
+    setPhase('success');
+    setTimeout(startGuessing, 3000); 
+  };
+
+  const handleFailure = () => {
+    if (lives > 1) {
+      setLives(lives - 1);
+      setPhase('failure');
+      setTimeout(startGuessing, 3000);
+    } else {
+      setLives(0);
+      setPhase('farewell');
+    }
+  };
 
   const contextValue: GameContextType = {
     lives,
     score,
     timeRemaining,
+    phase,
     startNewGame,
-    // ... otras variables y funciones ...
+    startGreeting,
+    startGuessing,
+    handleSuccess,
+    handleFailure,
   };
 
   return (

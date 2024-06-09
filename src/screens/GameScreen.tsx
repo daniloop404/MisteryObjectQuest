@@ -7,16 +7,25 @@ import CharacterSpeech from '../components/game/CharacterSpeech';
 import GameStats from '../components/game/GameStats';
 import PlayerResponse from '../components/game/PlayerResponse';
 import GameProvider from '../context/GameContext';
+import { getUserProfile } from '../services/profileService';
+
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
 const GameScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<{ username: string; avatar: string | null }>({ username: '', avatar: null });
   const route = useRoute<GameScreenRouteProp>();
   const { character } = route.params;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     const loadCharacter = async () => {
+      try {
+        const profile = await getUserProfile();
+        setUserProfile({ username: profile.username, avatar: profile.avatar });
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
       setIsLoading(false);
     };
     loadCharacter();
@@ -27,7 +36,7 @@ const GameScreen: React.FC = () => {
   };
 
   const handleInstructions = () => {
-    // Aquí iría la lógica para mostrar las instrucciones
+    //lógica para mostrar las instrucciones
   };
 
   if (isLoading) {
@@ -39,31 +48,31 @@ const GameScreen: React.FC = () => {
   }
 
   return (
-    <GameProvider> 
+    <GameProvider>
       <ImageBackground
-        source={{ uri: character.image }} // Usamos la imagen de fondo desde el estado
+        source={{ uri: character.image }}
         style={styles.container}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
         <View style={styles.innerContainer}>
           <Text style={[styles.characterName, { color: character.color }]}>{character.name}</Text>
-          <CharacterPortrait character={character} /> 
+          <CharacterPortrait character={character} />
           <CharacterSpeech character={character} />
           <View style={styles.divider} />
-          <GameStats /> 
+          <GameStats userProfile={userProfile} />
           <PlayerResponse characterColor={character.color} />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.instructionsButton]} onPress={handleInstructions}>
               <Text style={styles.buttonText}>Instrucciones</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> 
             <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
               <Text style={styles.buttonText}>Salir</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
-    </GameProvider> 
+    </GameProvider>
   );
 };
 

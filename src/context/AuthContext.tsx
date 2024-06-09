@@ -3,23 +3,27 @@ import { checkUserLoggedIn } from '../services/authService';
 
 interface AuthContextType {
   isLoggedIn: boolean;
+  isLoading: boolean;
   login: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
+  isLoading: true,
   login: () => {},
   logout: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       const loggedIn = await checkUserLoggedIn();
       setIsLoggedIn(loggedIn);
+      setIsLoading(false);
     };
     checkLoginStatus();
   }, []);
@@ -35,7 +39,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

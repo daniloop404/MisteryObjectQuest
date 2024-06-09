@@ -4,7 +4,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { logoutUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
-import { pushCharacter } from '../services/pushCharacterService'; // Importa el servicio
+import { pushCharacter } from '../services/pushCharacterService';
 
 const GameMenuScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -47,9 +47,9 @@ const GameMenuScreen: React.FC = () => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.buttonText}>Perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleAddCharacter}>
+        {/* <TouchableOpacity style={styles.button} onPress={handleAddCharacter}>
           <Text style={styles.buttonText}>Agregar Personaje</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.button} onPress={handleLogout}>
           <Text style={styles.buttonText}>Cerrar Sesión</Text>
         </TouchableOpacity>

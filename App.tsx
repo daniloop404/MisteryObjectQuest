@@ -11,7 +11,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import { RootStackParamList } from './src/constants/types'; // Asegúrate de que esta ruta es correcta
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { useLoadFonts } from './src/constants/fonts';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.splashContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -53,7 +53,15 @@ const GameStackNavigator = () => (
 );
 
 const AppNavigator = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <View style={styles.splashContainer}>
+        <Image source={require('./assets/splash.png')} style={styles.splashImage} />
+      </View>
+    );
+  }
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
@@ -65,5 +73,19 @@ const AppNavigator = () => {
     </RootStack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  splashContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff', // Ajusta el color de fondo según tu diseño
+  },
+  splashImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain', // Ajusta esta propiedad según tu diseño
+  },
+});
 
 export default App;

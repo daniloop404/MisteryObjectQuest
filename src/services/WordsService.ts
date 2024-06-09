@@ -1,4 +1,4 @@
-import { words as commonWords } from '../constants/words'; // Importa las palabras comunes
+import { words as commonWords } from '../constants/words';
 
 class GameService {
 

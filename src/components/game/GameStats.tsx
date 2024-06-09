@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { useGameContext } from '../../context/GameContext';
-import { getUserProfile } from '../../services/profileService';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const GameStats: React.FC = () => {
+interface GameStatsProps {
+  userProfile: {
+    username: string;
+    avatar: string | null;
+  };
+}
+
+const GameStats: React.FC<GameStatsProps> = ({ userProfile }) => {
   const { lives, score, timeRemaining } = useGameContext();
-  const [userProfile, setUserProfile] = useState<{ username: string; avatar: string | null }>({ username: '', avatar: null });
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const profile = await getUserProfile();
-        setUserProfile({ username: profile.username, avatar: profile.avatar });
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
 
   const formattedTime = `${Math.floor(timeRemaining / 60)
     .toString()

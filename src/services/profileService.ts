@@ -1,7 +1,23 @@
 import { firebase } from '../constants/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';
-
+export interface UserInfo { // Agrega "export" aquí
+  uid: string;
+  username: string;
+  email: string;
+  avatar?: string;
+  informacionAdicional: {
+    edad?: string;
+    genero?: string;
+    nombreReal?: string;
+  };
+  interesesYPreferencias: {
+    actividadesFavoritas?: string;
+    colorFavorito?: string;
+    generosFavoritos?: string;
+    hobbies?: string;
+    musicaFavorita?: string;
+  };
+}
 export const getUserProfile = async () => {
   try {
     const userToken = await AsyncStorage.getItem('userToken');

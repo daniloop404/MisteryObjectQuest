@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, ImageBackground, M
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { loginUser } from '../services/authService';
-import { useAuth } from '../context/AuthContext'; // Importa el contexto
+import { useAuth } from '../context/AuthContext';
 import CustomModal from '../components/CustomModal';
 
 
@@ -14,7 +14,7 @@ const LoginScreen: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  const { login } = useAuth(); // Accede a la función login del contexto
+  const { login } = useAuth();
   const navigation = useNavigation();
 
   const handleLogin = async () => {
@@ -27,16 +27,14 @@ const LoginScreen: React.FC = () => {
     const result = await loginUser(email, password);
 
     if (result?.success) {
-      // Inicia sesión usando el contexto
+      
       login(); 
 
-      // Puedes mostrar un mensaje de éxito si lo deseas
+      
       setModalMessage("Ingreso exitoso.");
       setModalVisible(true);
       setTimeout(() => {
         setModalVisible(false);
-        // No necesitas navegar manualmente aquí, 
-        // el contexto actualizará la navegación automáticamente
       }, 1000);
     } else {
       setModalMessage(result?.error || 'Ocurrió un error desconocido');

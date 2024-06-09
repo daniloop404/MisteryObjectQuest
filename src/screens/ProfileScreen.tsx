@@ -11,8 +11,8 @@ import {
   Modal
 } from 'react-native';
 import { getUserProfile, updateUserProfileImage } from '../services/profileService';
-import AvatarSection from '../components/AvatarSection'; // Importa el nuevo componente
-import UserCredentials from '../components/UserCredentials'; // Importa el nuevo componente
+import AvatarSection from '../components/AvatarSection'; 
+import UserCredentials from '../components/UserCredentials'; 
 import AdditionalInfo from '../components/AdditionalInfo';
 import InterestsAndPreferences from '../components/InterestsAndPreferences';
 const ProfileScreen: React.FC = () => {
@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
-    alignSelf: 'flex-start', // Alinea el texto a la izquierda
+    alignSelf: 'flex-start', 
   },
   value: {
     fontSize: 16,
     marginBottom: 10,
-    alignSelf: 'flex-start', // Alinea el texto a la izquierda
+    alignSelf: 'flex-start', 
   },
   infoContainer: {
     marginBottom: 20,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
     paddingTop: 32,
-    paddingBottom: 32, // Añade padding al contenido para evitar que quede pegado a los bordes
+    paddingBottom: 32, 
   },
 });
 

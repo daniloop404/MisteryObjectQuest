@@ -22,7 +22,8 @@ export const pushCharacter = async () => {
       incorrect1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_incorrect1%20(1).png?alt=media&token=af6a7aee-a6cd-407a-9a47-241a92e61f00',
       incorrect2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_incorrect2%20(1).png?alt=media&token=d814463d-9d3b-4391-aa2e-00e4a978f2cb',
       correct1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_correct1%20(1).png?alt=media&token=6e4e766a-f2fb-45fc-abab-9206d4a71927',
-      correct2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_correct2%20(1).png?alt=media&token=9d24fc19-b2bb-4e2d-a682-2984d7aebfd5'
+      correct2:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_correct2%20(1).png?alt=media&token=9d24fc19-b2bb-4e2d-a682-2984d7aebfd5',
+      asking1:'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FVictoria%2Fgame_expressions%2FVictoria_asking1%20(1).png?alt=media&token=ad5b2217-b589-4624-8bad-7746b24bbb52'
     },  
     personality: {
       intelligent: 'Extremadamente inteligente y astuta, capaz de resolver los casos más complicados gracias a su mente analítica y detallista.',
