@@ -8,7 +8,7 @@ import GameStats from '../components/game/GameStats';
 import PlayerResponse from '../components/game/PlayerResponse';
 import GameProvider from '../context/GameContext';
 import { getUserProfile } from '../services/profileService';
-
+import { useGameContext } from '../context/GameContext'; // Importa el contexto
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
 const GameScreen: React.FC = () => {
@@ -17,7 +17,7 @@ const GameScreen: React.FC = () => {
   const route = useRoute<GameScreenRouteProp>();
   const { character } = route.params;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { startNewGame } = useGameContext(); // Obtén la función del contexto
   useEffect(() => {
     const loadCharacter = async () => {
       try {
@@ -26,6 +26,7 @@ const GameScreen: React.FC = () => {
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
+      startNewGame(); 
       setIsLoading(false);
     };
     loadCharacter();

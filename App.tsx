@@ -12,7 +12,7 @@ import { RootStackParamList } from './src/constants/types'; // Asegúrate de que
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { useLoadFonts } from './src/constants/fonts';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
-
+import GameProvider from './src/context/GameContext';
 const RootStack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
@@ -46,9 +46,11 @@ const AuthStackNavigator = () => (
 const GameStackNavigator = () => (
   <RootStack.Navigator screenOptions={{ headerShown: false }}>
     <RootStack.Screen name="GameMenu" component={GameMenuScreen} />
-    <RootStack.Screen name="GameScreen" component={GameScreen} />
     <RootStack.Screen name="CharacterSelection" component={CharacterSelectionScreen} />
     <RootStack.Screen name="Profile" component={ProfileScreen} />
+    <GameProvider> {/* <-- Envuelve GameScreen con el proveedor */}
+      <RootStack.Screen name="GameScreen" component={GameScreen} /> 
+    </GameProvider>
   </RootStack.Navigator>
 );
 

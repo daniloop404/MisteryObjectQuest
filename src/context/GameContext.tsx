@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
-type GamePhase = 'loading' | 'greeting' | 'guessing' | 'success' | 'failure' | 'farewell' ;
+
+type GamePhase = 'loading' | 'greeting' | 'guessing' | 'checking' | 'success' | 'failure' | 'farewell' ;
 
 interface GameContextType {
   lives: number;
@@ -9,8 +10,10 @@ interface GameContextType {
   startNewGame: () => void;
   startGreeting: () => void;
   startGuessing: () => void;
+  startChecking: () => void; // Nueva función para la fase de checking
   handleSuccess: () => void;
   handleFailure: () => void;
+  handleCheckGuess: (userGuess: string) => void; // Función para manejar la verificación de la respuesta
 }
 
 interface Props {
@@ -25,75 +28,109 @@ const GameProvider: React.FC<Props> = ({ children }) => {
   const [timeRemaining, setTimeRemaining] = useState(30);
   const [phase, setPhase] = useState<GamePhase>('loading');
 
-  const startTimer = useCallback(() => {
-    let timerId: NodeJS.Timeout;
+  const startNewGame = () => {
+    console.log("Iniciando nuevo juego");
+    setLives(3);
+    setScore(0);
+    setPhase('greeting'); // <--- Asegúrate de que la fase inicial sea 'loading'
+    startGreeting();      // <--- Llama a startGreeting para comenzar la secuencia
+  };
 
-    if (timeRemaining <= 0) {
-      return;
-    }
 
-    timerId = setTimeout(() => {
+  
+  // Temporizador como una función
+  const startTimer = useCallback((duration: number = 30) => {
+    console.log(`Iniciando temporizador para la fase: ${phase}`); 
+    setTimeRemaining(duration); 
+
+    const timerId = setTimeout(() => {
       if (timeRemaining > 0) {
         setTimeRemaining(timeRemaining - 1);
       } else {
-        if (lives > 0) {
-          setLives(lives - 1);
-          setTimeRemaining(30);
-        } else {
-          setPhase('farewell');
-        }
+        handleTimeout(); 
       }
     }, 1000);
 
-    return () => clearTimeout(timerId);
-  }, [timeRemaining, lives]);
-
-  useEffect(() => {
-    let timerId: NodeJS.Timeout;
-
-    if (timeRemaining > 0 && phase === 'guessing') {
-      timerId = setTimeout(() => {
-        setTimeRemaining(timeRemaining - 1);
-      }, 1000);
-    }
-
-    return () => clearTimeout(timerId);
+    return timerId;  
   }, [timeRemaining, phase]);
 
-  const startNewGame = () => {
-    setLives(3);
-    setScore(0);
-    setTimeRemaining(30);
-    setPhase('greeting');
+  // Función para manejar el fin del tiempo
+  const handleTimeout = () => {
+    console.log('Tiempo agotado!');
+    if (lives > 0) {
+      setLives(lives - 1);
+      handleFailure(); 
+    } else {
+      setPhase('farewell');
+    }
   };
 
+  // Iniciar el temporizador solo en la fase 'guessing'
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
+    if (phase === 'guessing') {
+      timerId = startTimer();
+    }
+    return () => clearTimeout(timerId);
+  }, [phase, startTimer]);
+
+
+
   const startGreeting = () => {
+    console.log('Fase: Saludo');
     setPhase('greeting');
     setTimeout(() => {
-      setPhase('guessing');
-      setTimeRemaining(30);
-    }, 10000);
+      startGuessing();
+    }, 5000); // Mostrar saludo por 5 segundos
   };
 
   const startGuessing = () => {
+    console.log('Fase: Adivinanza');
     setPhase('guessing');
-    setTimeRemaining(30);
+    startTimer(); 
+  };
+
+  // Función para iniciar la fase de checking
+  const startChecking = () => {
+    console.log('Fase: Verificar');
+    setPhase('checking');
   };
 
   const handleSuccess = () => {
+    console.log('Fase: Éxito');
     setScore(score + 1);
     setPhase('success');
-    setTimeout(startGuessing, 3000); 
+    setTimeout(() => {
+      startGuessing();
+    }, 3000); 
   };
 
   const handleFailure = () => {
+    console.log('Fase: Fallo');
     if (lives > 1) {
       setLives(lives - 1);
       setPhase('failure');
-      setTimeout(startGuessing, 3000);
+      setTimeout(() => {
+        startGuessing();
+      }, 3000); 
     } else {
       setLives(0);
       setPhase('farewell');
+    }
+  };
+
+  // Función para manejar la verificación de la respuesta
+  const handleCheckGuess = (userGuess: string) => {
+    // Aquí puedes implementar la lógica para verificar la respuesta
+    // contra la palabra correcta. 
+    // Por ejemplo:
+    // const isCorrect = userGuess.toLowerCase() === correctWord.toLowerCase(); 
+
+    // Después de la verificación:
+    if (/* isCorrect */ true) {
+      handleSuccess(); 
+    } else {
+      handleFailure(); 
     }
   };
 
@@ -105,12 +142,14 @@ const GameProvider: React.FC<Props> = ({ children }) => {
     startNewGame,
     startGreeting,
     startGuessing,
+    startChecking,
     handleSuccess,
     handleFailure,
+    handleCheckGuess,
   };
 
-  return (
-    <GameContext.Provider value={contextValue}>
+ return (
+    <GameContext.Provider value={{ ...contextValue, startNewGame }}> 
       {children}
     </GameContext.Provider>
   );
