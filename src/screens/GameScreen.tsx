@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, ImageBackground, ScrollView } from 'react-native';
 import { useNavigation, useRoute, RouteProp, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import CharacterPortrait from '../components/game/CharacterPortrait';
 import CharacterSpeech from '../components/game/CharacterSpeech';
 import GameStats from '../components/game/GameStats';
 import PlayerResponse from '../components/game/PlayerResponse';
-import GameProvider from '../context/GameContext';
-import { getUserProfile } from '../services/profileService';
-import { useGameContext } from '../context/GameContext'; // Importa el contexto
+import GameProvider, { useGameContext } from '../context/GameContext'; 
+import { getUserProfile, UserInfo } from '../services/profileService';
+
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
 const GameScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<{ username: string; avatar: string | null }>({ username: '', avatar: null });
+  const [userProfile, setUserProfile] = useState<UserInfo | null>(null);
   const route = useRoute<GameScreenRouteProp>();
   const { character } = route.params;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { startNewGame } = useGameContext(); // Obtén la función del contexto
+  
+  const StartGameComponent = () => {
+    const { startGreeting } = useGameContext(); // Ahora puedes usar useGameContext() aquí
+
+    useEffect(() => {
+      startGreeting(); // Iniciar el juego al montar este componente
+    }, []); 
+
+    return null; // Este componente no renderiza nada, solo inicia el juego
+  };
+  
   useEffect(() => {
     const loadCharacter = async () => {
       try {
         const profile = await getUserProfile();
-        setUserProfile({ username: profile.username, avatar: profile.avatar });
+        setUserProfile(profile);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
-      startNewGame(); 
       setIsLoading(false);
     };
     loadCharacter();
@@ -37,10 +46,10 @@ const GameScreen: React.FC = () => {
   };
 
   const handleInstructions = () => {
-    //lógica para mostrar las instrucciones
+    // lógica para mostrar las instrucciones
   };
 
-  if (isLoading) {
+  if (isLoading || !userProfile) {
     return (
       <View style={styles.splashContainer}>
         <Image source={require('../../assets/splash.png')} style={styles.splashImage} />
@@ -49,29 +58,32 @@ const GameScreen: React.FC = () => {
   }
 
   return (
-    <GameProvider>
+    <GameProvider character={character} user={userProfile} navigation={navigation}>
+      {!isLoading && <StartGameComponent />}
       <ImageBackground
         source={{ uri: character.image }}
         style={styles.container}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
-        <View style={styles.innerContainer}>
-          <Text style={[styles.characterName, { color: character.color }]}>{character.name}</Text>
-          <CharacterPortrait character={character} />
-          <CharacterSpeech character={character} />
-          <View style={styles.divider} />
-          <GameStats userProfile={userProfile} />
-          <PlayerResponse characterColor={character.color} />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.instructionsButton]} onPress={handleInstructions}>
-              <Text style={styles.buttonText}>Instrucciones</Text>
-            </TouchableOpacity> 
-            <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
-              <Text style={styles.buttonText}>Salir</Text>
-            </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.innerContainer}>
+            <Text style={[styles.characterName, { color: character.color }]}>{character.name}</Text>
+            <CharacterPortrait character={character} />
+            <CharacterSpeech character={character} />
+            <View style={styles.divider} />
+            <GameStats userProfile={userProfile} />
+            <PlayerResponse characterColor={character.color} />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.button, styles.instructionsButton]} onPress={handleInstructions}>
+                <Text style={styles.buttonText}>Instrucciones</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Salir</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </ImageBackground>
     </GameProvider>
   );
@@ -86,6 +98,11 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.85)',

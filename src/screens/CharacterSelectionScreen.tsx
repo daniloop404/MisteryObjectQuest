@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Dimensions, ImageBackground } from 'react-native';
-import { Character, getCharacters } from '../services/characterService';
+import { CharacterInfo, getCharacters } from '../services/characterService';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 type CharacterSelectionScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CharacterSelection'>;
 
 const CharacterSelectionScreen: React.FC = () => {
-  const [chars, setChars] = useState<Character[]>([]);
+  const [chars, setChars] = useState<CharacterInfo[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation<CharacterSelectionScreenNavigationProp>();
