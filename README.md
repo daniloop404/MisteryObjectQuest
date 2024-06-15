@@ -52,6 +52,10 @@ Esto iniciará el servidor de desarrollo de Expo. Puedes escanear el código QR 
 
 * Victoria es una detective privada capaz de interactuar con espíritus. Junto a su compañero espiritual, Oliver, resuelve misterios tanto del mundo de los vivos como del más allá.
 
+### Zog
+
+* Zog es un amigable alienígena varado en la Tierra tras un experimento fallido. Agradecido por la hospitalidad humana, intenta adaptarse a su nuevo hogar con ayuda de Victoria.
+
 
 ## Notas
 
