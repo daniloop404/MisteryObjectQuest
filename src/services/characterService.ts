@@ -1,6 +1,6 @@
 import { firebase } from "../constants/firebaseConfig";
 
-export interface Character {
+export interface CharacterInfo {
   name: string;
   image: string;
   description: string;
@@ -37,12 +37,14 @@ export interface Character {
     oliver: string;
     world: string;
   };
+  specificWords: string[];
+  
 }
 
-export const getCharacters = async (): Promise<Character[]> => {
+export const getCharacters = async (): Promise<CharacterInfo[]> => {
   const snapshot = await firebase.database().ref('characters').once('value');
   const charactersData = snapshot.val();
-  const characters: Character[] = [];
+  const characters: CharacterInfo[] = [];
 
   if (charactersData) {
     Object.keys(charactersData).forEach((key) => {
@@ -62,6 +64,7 @@ export const getCharacters = async (): Promise<Character[]> => {
         loadingImage: character.loadingImage,
         personality: character.personality,
         relationships: character.relationships,
+        specificWords: character.specificWords,
       });
     });
   }

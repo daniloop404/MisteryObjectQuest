@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text } from 'react-native'; 
+import { useGameContext } from '../../context/GameContext';
 
 interface CharacterSpeechProps {
   character: {
@@ -9,23 +10,40 @@ interface CharacterSpeechProps {
 }
 
 const CharacterSpeech: React.FC<CharacterSpeechProps> = ({ character }) => {
-  const [hint, setHint] = useState('');
+  const { phase, output } = useGameContext(); 
+  const [message, setMessage] = useState('');
 
-  const handleHintPress = () => {
-    setHint('Esta es una pista.');
-  };
+  useEffect(() => {
+    let thinkingInterval: NodeJS.Timeout;
+
+    switch (phase) {
+      case 'loading':
+      case 'checking': // Agregar checking aquí
+        setMessage('Pensando');
+        thinkingInterval = setInterval(() => {
+          setMessage((prev) => (prev === 'Pensando...' ? 'Pensando' : prev + '.'));
+        }, 500);
+        break;
+      case 'greeting':
+      case 'guessing':
+      case 'failure':
+      case 'success':
+      case 'farewell':
+        setMessage(output); 
+        break;
+      default:
+        setMessage(''); 
+        break;
+    }
+
+    return () => {
+      clearInterval(thinkingInterval);
+    };
+  }, [phase, output]); 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.characterDialogue}>
-        {`"¡Hola, aventurero! Soy ${character.name}, lista para una nueva expedición contigo."`}
-      </Text>
-      <View style={styles.hintContainer}>
-        <TouchableOpacity style={[styles.hintButton, { backgroundColor: character.color }]} onPress={handleHintPress}>
-          <Text style={styles.buttonText}>Pista</Text>
-        </TouchableOpacity>
-        <Text style={styles.hintText}>{hint}</Text>
-      </View>
+      <Text style={styles.characterDialogue}>{message}</Text>
     </View>
   );
 };
@@ -40,23 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Light', 
     textAlign: 'center',
-  },
-  hintContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  hintButton: {
-    backgroundColor: '#1B2353',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  hintText: {
-    fontSize: 18,
-    fontFamily: 'Light', 
-    color: '#D83838',
   },
   buttonText: {
     color: '#fff',

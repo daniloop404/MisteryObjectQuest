@@ -100,49 +100,18 @@ import { firebase } from "../constants/firebaseConfig";
 export const pushCharacter = async () => {
   const character = {
     name: 'Zog',
-    image: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fmain_zog.png?alt=media&token=4487cd73-f371-4bbd-9e43-e5091ea66808',  // Remover URL
-    loadingImage: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Floading%20(1).png?alt=media&token=96908696-ff7e-4f15-ac3d-bd09b4c802f6',  // Remover URL
+    image: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fmain_zog.png?alt=media&token=4487cd73-f371-4bbd-9e43-e5091ea66808',
     description: 'Zog es un alienígena que terminó en la Tierra después de un experimento fallido y no puede regresar a su planeta. Agradece que los humanos lo hayan recibido con los brazos abiertos. Zog fue encontrado por Victoria durante una investigación sobre una casa embrujada con un fantasma verde, que resultó ser Zog. Ahora vive en una casa proporcionada por Victoria. Usa una camiseta hawaiana porque cree que eso lo ayudará a mezclarse mejor con los humanos.',
-    expressions: {
-      expressionless: '',  // Remover URL
-      surprised: '',  // Remover URL
-      confused: '',  // Remover URL
-      happy: '',  // Remover URL
-      calm: '',  // Remover URL
-      disappointed: '',  // Remover URL
-      sad: '',  // Remover URL
-    },
-    game_expressions: {
-      greeting1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgreeting1%20(1).png?alt=media&token=64eb1343-c1c1-4393-ab09-a4f76a677c77',  // Remover URL
-      greeting2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgreeting2%20(1).png?alt=media&token=fe37d667-63f8-450a-ac92-1b6891f62b40',  // Remover URL
-      goodbye1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgoodbye1%20(1).png?alt=media&token=1211835b-eada-41c8-9968-c62c689a3699',  // Remover URL
-      goodbye2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgoodbye2%20(1).png?alt=media&token=8d2b39d4-e9da-4a3d-b74e-1ab9f4ac59de',  // Remover URL
-      incorrect1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fincorrect1%20(1).png?alt=media&token=6361de21-2628-4f1a-8f3b-3e3a281166f2',  // Remover URL
-      incorrect2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fincorrect2%20(1).png?alt=media&token=de00d9a2-5782-481f-a8d1-5beb6881c1bf',  // Remover URL
-      correct1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fcorrect1%20(1).png?alt=media&token=0186be11-3807-4ec0-8332-2d76d148ee0a',  // Remover URL
-      correct2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fcorrect2%20(1).png?alt=media&token=65c6e939-3595-44f3-b2dc-b35f2e61e4ae',  // Remover URL
-      guessing1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fguessing1%20(1).png?alt=media&token=0d701aa0-15fa-4274-8bcc-7d2786b23f0e',  // Remover URL
-      guessing2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fguessing2%20(1).png?alt=media&token=7b3fb861-57cd-4baa-8e3c-64e2bc6db3a0',  // Remover URL
-    },  
-    personality: {
-      curious: 'Extremadamente curioso y siempre emocionado por aprender sobre los objetos humanos.',
-      enthusiastic: 'Entusiasta y lleno de energía, aunque a veces se confunde culturalmente.',
-      friendly: 'Muy amigable y agradecido con los humanos por recibirlo en su planeta.'
-    },
-    appearance: 'Zog tiene una piel verde luminiscente, ojos grandes y redondos, y antenas largas y delgadas en la cabeza. Usa una camiseta hawaiana colorida que cree lo ayuda a mezclarse mejor con los humanos.',
-    attire: 'Camiseta hawaiana colorida, pantalones cortos y sandalias. Lleva una mochila futurista y guantes holográficos.',
     color: '#00FF00', // Verde
     age: 200,
+    appearance: 'Zog tiene una piel verde luminiscente, ojos grandes y redondos, y antenas largas y delgadas en la cabeza. Usa una camiseta hawaiana colorida que cree lo ayuda a mezclarse mejor con los humanos.',
+    attire: 'Camiseta hawaiana colorida, pantalones cortos y sandalias. Lleva una mochila futurista y guantes holográficos.',
     backstory: {
-      earlyLife: 'En su planeta natal Xorblax, Zog era un joven científico siempre dispuesto a experimentar, aunque tiene 200 años es joven para su especie',
-      experiment: 'Durante un experimento para desarrollar un portal interdimensional, Zog fue transportado accidentalmente a la Tierra y no puede regresar.',
-      discovery: 'Fue encontrado por Victoria mientras investigaba una casa embrujada. La supuesta aparición fantasmal resultó ser Zog tratando de entender su entorno.',
-      lifeOnEarth: 'Ahora vive en una casa que Victoria le proporcionó, tratando de aprender sobre la vida en la Tierra y mezclarse con los humanos. Agradece la hospitalidad humana y ha hecho muchos amigos.',
-    },
-    relationships: {
-      victoria: 'Zog y Victoria desarrollaron una fuerte amistad después de su encuentro. Victoria lo ayudó a establecerse en la Tierra y le enseña sobre la cultura humana.',
-      oliver: 'Aunque al principio asustado por su apariencia, Oliver pronto se hizo amigo de Zog y ahora disfruta de sus historias sobre Xorblax.',
-      humans: 'Zog está fascinado por los humanos y siempre busca hacer nuevos amigos. Es especialmente cercano a los niños, que encuentran su apariencia y curiosidad encantadoras.',
+      career: 'En su planeta natal Xorblax, Zog era un joven científico siempre dispuesto a experimentar.',
+      discovery: 'Durante un experimento para desarrollar un portal interdimensional, Zog fue transportado accidentalmente a la Tierra y no puede regresar.',
+      earlyLife: 'Fue encontrado por Victoria mientras investigaba una casa embrujada. La supuesta aparición fantasmal resultó ser Zog tratando de entender su entorno.',
+      oliver: 'Ahora vive en una casa que Victoria le proporcionó, tratando de aprender sobre la vida en la Tierra y mezclarse con los humanos. Agradece la hospitalidad humana y ha hecho muchos amigos.',
+      secret: 'Zog tiene una curiosidad insaciable por la cultura y tecnología humanas, y a menudo se pregunta si algún día podrá regresar a su planeta natal.'
     },
     dialogues: {
       greetings: [
@@ -168,6 +137,37 @@ export const pushCharacter = async () => {
         'Siempre me sorprenden las soluciones humanas para los problemas cotidianos.'
       ]
     },
+    expressions: {
+      expressionless: 'URL_EXPRESION',
+      surprised: 'URL_EXPRESION',
+      confused: 'URL_EXPRESION',
+      happy: 'URL_EXPRESION',
+      calm: 'URL_EXPRESION',
+      disappointed: 'URL_EXPRESION',
+      sad: 'URL_EXPRESION',
+    },
+    game_expressions: {
+      greeting1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgreeting1%20(1).png?alt=media&token=64eb1343-c1c1-4393-ab09-a4f76a677c77',
+      greeting2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgreeting2%20(1).png?alt=media&token=fe37d667-63f8-450a-ac92-1b6891f62b40',
+      goodbye1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgoodbye1%20(1).png?alt=media&token=1211835b-eada-41c8-9968-c62c689a3699',
+      goodbye2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fgoodbye2%20(1).png?alt=media&token=8d2b39d4-e9da-4a3d-b74e-1ab9f4ac59de',
+      incorrect1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fincorrect1%20(1).png?alt=media&token=6361de21-2628-4f1a-8f3b-3e3a281166f2',
+      incorrect2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fincorrect2%20(1).png?alt=media&token=de00d9a2-5782-481f-a8d1-5beb6881c1bf',
+      correct1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fcorrect1%20(1).png?alt=media&token=0186be11-3807-4ec0-8332-2d76d148ee0a',
+      correct2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fcorrect2%20(1).png?alt=media&token=65c6e939-3595-44f3-b2dc-b35f2e61e4ae',
+      guessing1: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fguessing1%20(1).png?alt=media&token=0d701aa0-15fa-4274-8bcc-7d2786b23f0e',
+      guessing2: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Fguessing2%20(1).png?alt=media&token=7b3fb861-57cd-4baa-8e3c-64e2bc6db3a0'
+    },
+    loadingImage: 'https://firebasestorage.googleapis.com/v0/b/movil-game-9e95f.appspot.com/o/personajes%2FZog%2Floading%20(1).png?alt=media&token=96908696-ff7e-4f15-ac3d-bd09b4c802f6',
+    personality: {
+      compassionate: 'Zog es extremadamente compasivo y amigable con los humanos, siempre dispuesto a ayudar y aprender.',
+      intelligent: 'Posee una inteligencia superior y un profundo conocimiento científico de su propia cultura.',
+      isolated: 'A pesar de su naturaleza sociable, a veces se siente aislado por la distancia de su hogar y la falta de tecnología avanzada.'
+    },
+    relationships: {
+      oliver: 'Zog y Oliver se han convertido en grandes amigos desde que se conocieron. Oliver disfruta de las historias de Zog sobre Xorblax y a menudo ayuda a traducir las costumbres humanas para él.',
+      world: 'Zog está fascinado por la diversidad y complejidad de la vida en la Tierra. Le encanta explorar nuevos lugares y hacer amigos humanos.'
+    },
     specificWords: [
       "alienígena",
       "planeta",
@@ -191,9 +191,6 @@ export const pushCharacter = async () => {
       "estrella"
     ]
   };
-
-
-
 
 
 

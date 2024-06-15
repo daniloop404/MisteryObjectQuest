@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Dimensions, ImageBackground } from 'react-native';
-import { Character, getCharacters } from '../services/characterService';
+import { CharacterInfo, getCharacters } from '../services/characterService';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,26 +11,34 @@ const { width, height } = Dimensions.get('window');
 type CharacterSelectionScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CharacterSelection'>;
 
 const CharacterSelectionScreen: React.FC = () => {
-  const [chars, setChars] = useState<Character[]>([]);
+  const [chars, setChars] = useState<CharacterInfo[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentChar, setCurrentChar] = useState<CharacterInfo | null>(null);
   const navigation = useNavigation<CharacterSelectionScreenNavigationProp>();
 
   useEffect(() => {
     const fetchCharacters = async () => {
       const characters = await getCharacters();
       setChars(characters);
+      setCurrentChar(characters[0]); // Inicializar con el primer personaje
       setIsLoading(false);
     };
 
     fetchCharacters();
   }, []);
 
+  useEffect(() => {
+    if (chars.length > 0) {
+      setCurrentChar(chars[currentIndex]);
+    }
+  }, [currentIndex, chars]);
+
   const handleSwipe = (direction: 'left' | 'right') => {
-    if (direction === 'left' && currentIndex < chars.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else if (direction === 'right' && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+    if (direction === 'left') {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % chars.length);
+    } else if (direction === 'right') {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + chars.length) % chars.length);
     }
   };
 
@@ -42,10 +50,8 @@ const CharacterSelectionScreen: React.FC = () => {
     );
   }
 
-  const currentChar = chars[currentIndex];
-
   return (
-    <ImageBackground source={{ uri: currentChar.image }} style={styles.container} resizeMode="cover">
+    <ImageBackground source={currentChar ? { uri: currentChar.image } : require('../../assets/splash.png')} style={styles.container} resizeMode="cover">
       <View style={styles.overlay} />
       <Text style={styles.title}>Selecciona el personaje</Text>
       <ScrollView
@@ -54,35 +60,37 @@ const CharacterSelectionScreen: React.FC = () => {
         onScroll={(e) => {
           const offsetX = e.nativeEvent.contentOffset.x;
           const newIndex = Math.floor(offsetX / width);
-          setCurrentIndex(newIndex);
+          if (newIndex !== currentIndex) {
+            setCurrentIndex(newIndex);
+          }
         }}
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
       >
-        {chars.map((char, index) => (
-          <View key={index} style={styles.characterContainer}>
+        {currentChar && (
+          <View style={styles.characterContainer}>
             <View style={styles.innerContainer}>
-              <Text style={[styles.name, { color: char.color }]}>{char.name}</Text>
-              <Image source={{ uri: char.image }} style={styles.characterImage} />
-              <Text style={styles.description}>{char.description}</Text>
+              <Text style={[styles.name, { color: currentChar.color }]}>{currentChar.name}</Text>
+              <Image source={{ uri: currentChar.image }} style={styles.characterImage} />
+              <Text style={styles.description}>{currentChar.description}</Text>
               <TouchableOpacity
-                style={[styles.chooseButton, { backgroundColor: char.color }]}
-                onPress={() => navigation.navigate('GameScreen', { character: char })}
+                style={[styles.chooseButton, { backgroundColor: currentChar.color }]}
+                onPress={() => navigation.navigate('GameScreen', { character: currentChar })}
               >
                 <Text style={styles.buttonText}>Elegir</Text>
               </TouchableOpacity>
             </View>
           </View>
-        ))}
+        )}
       </ScrollView>
       <View style={styles.navigation}>
-        <TouchableOpacity onPress={() => handleSwipe('right')} disabled={currentIndex === 0}>
+        <TouchableOpacity onPress={() => handleSwipe('right')}>
           <FontAwesome name="arrow-left" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('GameMenu')}>
           <Text style={styles.buttonText}>Salir</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleSwipe('left')} disabled={currentIndex === chars.length - 1}>
+        <TouchableOpacity onPress={() => handleSwipe('left')}>
           <FontAwesome name="arrow-right" size={40} color={'#fff'} style={styles.iconShadow} />
         </TouchableOpacity>
       </View>

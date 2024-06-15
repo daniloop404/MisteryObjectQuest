@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface GameStatsProps {
   userProfile: {
     username: string;
-    avatar: string | null;
+    avatar: string | null | undefined;
   };
 }
 
