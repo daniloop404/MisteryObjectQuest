@@ -1,6 +1,7 @@
 # Mystery Object Quest
 
 Mystery Object Quest es un juego móvil de adivinanzas desarrollado con React Native, TypeScript y Expo. Utiliza la API de Google Gemini AI para generar pistas dinámicas y personalizadas que te ayudarán a descubrir palabras misteriosas.
+El arte del juego fue creado con stable diffusion, especificamente el modelo AutismMix SDXL y editado con Krita.
 
 ## Descripción
 
