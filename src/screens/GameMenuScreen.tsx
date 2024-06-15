@@ -47,9 +47,9 @@ const GameMenuScreen: React.FC = () => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.buttonText}>Perfil</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.button} onPress={handleAddCharacter}>
+        <TouchableOpacity style={styles.button} onPress={handleAddCharacter}>
           <Text style={styles.buttonText}>Agregar Personaje</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleLogout}>
           <Text style={styles.buttonText}>Cerrar Sesión</Text>
         </TouchableOpacity>
