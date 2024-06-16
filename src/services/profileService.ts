@@ -1,6 +1,6 @@
 import { firebase } from '../constants/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export interface UserInfo { // Agrega "export" aquí
+export interface UserInfo {
   uid: string;
   username: string;
   email: string;
@@ -17,6 +17,12 @@ export interface UserInfo { // Agrega "export" aquí
     hobbies?: string;
     musicaFavorita?: string;
   };
+  highScores?: {
+    characterName: string;
+    score: number;
+    image: string;
+    color: string;
+  }[];
 }
 export const getUserProfile = async () => {
   try {
@@ -129,6 +135,34 @@ export const updateUserProfileImage = async (imageUri: string, userId: string): 
         .update({ [field]: newValue });
     } catch (error) {
       console.error(`Error al actualizar el ${field} del perfil:`, error);
+      throw error;
+    }
+  };
+
+  export const saveMaxScore = async (userId: string, characterName: string, score: number, image: string, color: string): Promise<void> => {
+    try {
+      const userRef = firebase.database().ref(`usuarios/${userId}`);
+      const userSnapshot = await userRef.once('value');
+      const userProfile = userSnapshot.val() || {};
+  
+      const highScores = userProfile.highScores || [];
+  
+      // Buscar si ya existe un puntaje para el personaje
+      const existingScoreIndex = highScores.findIndex((entry: { characterName: string; }) => entry.characterName === characterName);
+  
+      if (existingScoreIndex !== -1) {
+        // Si existe y el nuevo puntaje es mayor, actualizarlo
+        if (highScores[existingScoreIndex].score < score) {
+          highScores[existingScoreIndex] = { characterName, score, image, color };
+        }
+      } else {
+        // Si no existe, agregar el nuevo puntaje
+        highScores.push({ characterName, score, image, color });
+      }
+  
+      await userRef.update({ highScores });
+    } catch (error) {
+      console.error('Error al guardar el puntaje máximo:', error);
       throw error;
     }
   };

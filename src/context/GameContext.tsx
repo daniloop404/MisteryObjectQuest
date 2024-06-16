@@ -3,6 +3,7 @@ import { NavigationProp } from '@react-navigation/native'; // Añadir esto
 import { RootStackParamList } from '../constants/types'; // Asegúrate de que la ruta es correcta
 import { UserInfo } from '../services/profileService'; 
 import { CharacterInfo } from '../services/characterService';
+import { saveMaxScore  } from '../services/profileService';
 import { GeminiService } from '../services/geminiService';
 import WordsService from '../services/WordsService';
 
@@ -274,12 +275,13 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       setPhase('farewell');
       console.log('Fase actual: farewell');
   
-      // Log out every second to check if the timeout is still running
-      
+      // Guardar el puntaje máximo en el perfil del usuario
+      await saveMaxScore(user.uid, character.name, score, character.image, character.color);
+  
       // Navegar a CharacterSelection después de 20 segundos
       farewellTimeoutRef.current = setTimeout(() => {
         navigation.navigate('CharacterSelection');
-      }, 20000); 
+      }, 20000);
   
       // Retorna la referencia (opcional, solo si necesitas acceder a ella fuera de la función)
       return farewellTimeoutRef;

@@ -25,7 +25,7 @@ const HomeScreen: React.FC = () => {
         resizeMode="cover"
       >
         <Text style={[styles.title, { fontFamily: 'Dino' }]}>
-          Mystery Object Quest
+          Mystery Word Quest
         </Text>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>

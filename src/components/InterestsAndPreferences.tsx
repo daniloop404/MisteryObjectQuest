@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { updateUserProfilePreferences } from '../services/profileService'; // Importa la nueva función
+import { updateUserProfilePreferences } from '../services/profileService';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface InterestsAndPreferencesProps {
@@ -22,11 +22,11 @@ const InterestsAndPreferences: React.FC<InterestsAndPreferencesProps> = ({ inter
     actividadesFavoritas: false,
   });
   const [editedPreferences, setEditedPreferences] = useState({ ...interesesYPreferencias });
-  const [originalPreferences, setOriginalPreferences] = useState({ ...interesesYPreferencias }); // Nuevo estado
-  
+  const [originalPreferences, setOriginalPreferences] = useState({ ...interesesYPreferencias });
+
   const handleEditField = (field: keyof InterestsAndPreferencesProps['interesesYPreferencias']) => {
     setIsEditing((prev) => ({ ...prev, [field]: true }));
-    setOriginalPreferences((prev) => ({ ...prev, [field]: editedPreferences[field] })); // Guardar valor original
+    setOriginalPreferences((prev) => ({ ...prev, [field]: editedPreferences[field] }));
   };
 
   const handleConfirmEdit = async (field: keyof InterestsAndPreferencesProps['interesesYPreferencias']) => {
@@ -34,18 +34,17 @@ const InterestsAndPreferences: React.FC<InterestsAndPreferencesProps> = ({ inter
       await updateUserProfilePreferences(field, editedPreferences[field]);
       setIsEditing((prev) => ({ ...prev, [field]: false }));
     } catch (error: unknown) {
-        if (error instanceof Error) {
-          alert(error.message);
-        } else {
-          // Manejar otro tipo de error
-          console.error('Error desconocido:', error);
-        }
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        console.error('Error desconocido:', error);
       }
+    }
   };
 
   const handleCancelEdit = (field: keyof InterestsAndPreferencesProps['interesesYPreferencias']) => {
     setIsEditing((prev) => ({ ...prev, [field]: false }));
-    setEditedPreferences((prev) => ({ ...prev, [field]: originalPreferences[field] })); // Usar valor original
+    setEditedPreferences((prev) => ({ ...prev, [field]: originalPreferences[field] }));
   };
 
   return (
@@ -83,54 +82,58 @@ const InterestsAndPreferences: React.FC<InterestsAndPreferencesProps> = ({ inter
 };
 
 const styles = StyleSheet.create({
-    infoContainer: {
-      marginBottom: 20,
-      width: '100%',
-    },
-    subtitle: {
-      fontSize: 24,
-      color: '#C44E4E',
-      fontFamily: 'Asquire',
-      marginBottom: 10,
-    },
-    fieldContainer: {
-      marginBottom: 10,
-    },
-    label: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginTop: 10,
-      alignSelf: 'flex-start',
-    },
-    valueContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    value: {
-      fontSize: 16,
-      marginBottom: 10,
-      alignSelf: 'flex-start',
-    },
-    inputContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    input: {
-      flex: 1,
-      borderWidth: 1,
-      borderColor: 'gray',
-      padding: 8,
-      marginRight: 10,
-    },
-    editIconContainer: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      borderRadius: 15,
-      padding: 5,
-      marginLeft: 10,
-    },
-    editIcon: {
-      marginHorizontal: 5,
-    },
-  });
+  infoContainer: {
+    width: '100%',
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  subtitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#C44E4E',
+    marginBottom: 16,
+  },
+  fieldContainer: {
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#555',
+    marginBottom: 4,
+  },
+  valueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  value: {
+    fontSize: 16,
+    color: '#333',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 8,
+    marginRight: 10,
+    borderRadius: 4,
+  },
+  editIconContainer: {
+    backgroundColor: '#C44E4E',
+    borderRadius: 15,
+    padding: 5,
+    marginLeft: 10,
+  },
+  editIcon: {
+    marginHorizontal: 5,
+  },
+});
 
 export default InterestsAndPreferences;

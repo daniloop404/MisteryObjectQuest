@@ -18,12 +18,11 @@ const AdditionalInfo: React.FC<AdditionalInfoProps> = ({ informacionAdicional })
     genero: false,
   });
   const [editedInfo, setEditedInfo] = useState({ ...informacionAdicional });
-  const [originalInfo, setOriginalInfo] = useState({ ...informacionAdicional }); // Nuevo estado
-
+  const [originalInfo, setOriginalInfo] = useState({ ...informacionAdicional });
 
   const handleEditField = (field: keyof AdditionalInfoProps['informacionAdicional']) => {
     setIsEditing((prev) => ({ ...prev, [field]: true }));
-    setOriginalInfo((prev) => ({ ...prev, [field]: editedInfo[field] })); // Guardar valor original
+    setOriginalInfo((prev) => ({ ...prev, [field]: editedInfo[field] }));
   };
 
   const handleConfirmEdit = async (field: keyof AdditionalInfoProps['informacionAdicional']) => {
@@ -31,18 +30,17 @@ const AdditionalInfo: React.FC<AdditionalInfoProps> = ({ informacionAdicional })
       await updateUserProfileField(field, editedInfo[field]);
       setIsEditing((prev) => ({ ...prev, [field]: false }));
     } catch (error: unknown) {
-        if (error instanceof Error) {
-          alert(error.message);
-        } else {
-          // Manejar otro tipo de error
-          console.error('Error desconocido:', error);
-        }
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        console.error('Error desconocido:', error);
       }
+    }
   };
 
   const handleCancelEdit = (field: keyof AdditionalInfoProps['informacionAdicional']) => {
     setIsEditing((prev) => ({ ...prev, [field]: false }));
-    setEditedInfo((prev) => ({ ...prev, [field]: originalInfo[field] })); // Usar valor original
+    setEditedInfo((prev) => ({ ...prev, [field]: originalInfo[field] }));
   };
 
   return (
@@ -81,14 +79,17 @@ const AdditionalInfo: React.FC<AdditionalInfoProps> = ({ informacionAdicional })
 
 const styles = StyleSheet.create({
   infoContainer: {
-    marginBottom: 20,
     width: '100%',
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    marginTop: 16,
   },
   subtitle: {
     fontSize: 24,
+    fontWeight: 'bold',
     color: '#C44E4E',
-    fontFamily: 'Asquire',
-    marginBottom: 10,
+    marginBottom: 16,
   },
   fieldContainer: {
     marginBottom: 10,
@@ -96,17 +97,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 10,
-    alignSelf: 'flex-start',
+    color: '#555',
+    marginBottom: 4,
   },
   valueContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 8,
   },
   value: {
     fontSize: 16,
-    marginBottom: 10,
-    alignSelf: 'flex-start',
+    color: '#333',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -118,9 +119,10 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     padding: 8,
     marginRight: 10,
+    borderRadius: 4,
   },
   editIconContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: '#C44E4E',
     borderRadius: 15,
     padding: 5,
     marginLeft: 10,

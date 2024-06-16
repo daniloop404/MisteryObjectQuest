@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Button, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, Button, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -18,11 +18,10 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({
   handleConfirm,
   handleCancel,
 }) => {
-
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
+      alert('¡Lo siento, necesitamos permisos para acceder a la galería de fotos para que esto funcione!');
       return;
     }
 
@@ -41,7 +40,7 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      alert('Sorry, we need camera permissions to make this work!');
+      alert('¡Lo siento, necesitamos permisos para acceder a la cámara para que esto funcione!');
       return;
     }
 
@@ -57,8 +56,9 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({
   };
 
   return (
-    <View style={styles.imageContainer}>
-      <View style={styles.imageWrapper}>
+    <View style={styles.avatarContainer}>
+      <Text style={styles.title}>Avatar</Text>
+      <View style={styles.imageContainer}>
         <Image
           source={{ uri: selectedImage || userInfo.avatar }}
           style={styles.profileImage}
@@ -70,14 +70,14 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({
             </TouchableOpacity>
           </View>
         )}
+        {!selectedImage && (
+          <View style={styles.cameraIconContainer2}>
+            <TouchableOpacity onPress={takePhoto} style={styles.icon}>
+              <FontAwesome name="camera" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
-      {!selectedImage && (
-        <View style={styles.cameraIconContainer2}>
-          <TouchableOpacity onPress={takePhoto} style={styles.icon}>
-            <FontAwesome name="camera" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      )}
       {selectedImage && (
         <View style={styles.buttonContainer}>
           <Button title="Confirmar" onPress={handleConfirm} />
@@ -89,25 +89,34 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({
 };
 
 const styles = StyleSheet.create({
+  avatarContainer: {
+    width: '100%',
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: '#C44E4E',
+    marginBottom: 20,
+  },
   imageContainer: {
     position: 'relative',
     marginBottom: 20,
-    alignItems: 'center',
-  },
-  imageWrapper: {
-    position: 'relative',
   },
   profileImage: {
     width: 200,
     height: 200,
     borderRadius: 100,
-    marginBottom: 20,
   },
   cameraIconContainer: {
     position: 'absolute',
     bottom: 10,
     left: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: '#C44E4E',
     borderRadius: 15,
     padding: 5,
   },
@@ -115,7 +124,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: '#C44E4E',
     borderRadius: 15,
     padding: 5,
   },

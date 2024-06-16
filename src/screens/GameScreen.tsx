@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.85)',
     padding: 16,
     borderRadius: 20,
-    width: '96%',
+    width: '100%',
     alignItems: 'center',
   },
   characterName: {

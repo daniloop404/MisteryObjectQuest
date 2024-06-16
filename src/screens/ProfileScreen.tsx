@@ -6,15 +6,14 @@ import {
   ImageBackground, 
   ScrollView, 
   Image,
-  Button,
-  TouchableOpacity,
-  Modal
 } from 'react-native';
 import { getUserProfile, updateUserProfileImage } from '../services/profileService';
 import AvatarSection from '../components/AvatarSection'; 
 import UserCredentials from '../components/UserCredentials'; 
 import AdditionalInfo from '../components/AdditionalInfo';
 import InterestsAndPreferences from '../components/InterestsAndPreferences';
+import HighScores from '../components/HighScores'; // Importar el componente HighScores
+
 const ProfileScreen: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,12 +73,11 @@ const ProfileScreen: React.FC = () => {
       resizeMode="cover"
     >
       <View style={styles.overlay} />
-      <ScrollView contentContainerStyle={styles.scrollContent}
-      style={{ width: '100%' }} 
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} style={{ width: '100%' }}>
         <View style={styles.innerContainer}>
-          <Text style={styles.title}>Perfil</Text>
-
+          <View style={styles.titleContainer}>
+            <Text style={styles.subtitle}>Perfil</Text>
+          </View>
           <AvatarSection
             userInfo={userInfo}
             selectedImage={selectedImage}
@@ -93,6 +91,10 @@ const ProfileScreen: React.FC = () => {
           <AdditionalInfo informacionAdicional={userInfo.informacionAdicional} />
 
           <InterestsAndPreferences interesesYPreferencias={userInfo.interesesYPreferencias} />
+
+          {userInfo.highScores && userInfo.highScores.length > 0 && (
+            <HighScores highScores={userInfo.highScores} />
+          )}
         </View>
       </ScrollView>
     </ImageBackground>
@@ -110,38 +112,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   innerContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    padding: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.0)',
+    paddingVertical: 32,
     borderRadius: 20,
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 36,
-    color: '#C44E4E',
-    fontFamily: 'Dino',
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-    alignSelf: 'flex-start', 
-  },
-  value: {
-    fontSize: 16,
-    marginBottom: 10,
-    alignSelf: 'flex-start', 
-  },
-  infoContainer: {
-    marginBottom: 20,
+  titleContainer: {
+    backgroundColor: '#C44E4ECC',
     width: '100%',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginBottom: 0,
+    alignItems: 'center',
   },
   subtitle: {
-    fontSize: 24,
-    color: '#C44E4E',
+    fontSize: 42,
+    color: '#FFFFFF',
     fontFamily: 'Dino',
-    marginBottom: 10,
+    marginTop: 0,
+    textAlign: 'center',
   },
   loadingContainer: {
     flex: 1,
