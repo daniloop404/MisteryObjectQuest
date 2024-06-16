@@ -59,10 +59,12 @@ Esto iniciará el servidor de desarrollo de Expo. Puedes escanear el código QR 
 
 ## Personajes
 
+### Victoria
+
 * Victoria es una detective privada capaz de interactuar con espíritus. Junto a su compañero espiritual, Oliver, resuelve misterios tanto del mundo de los vivos como del más allá.
 
 <div align="center">
-  <img src="https://github.com/daniloop404/MisteryObjectQuest/assets/142755776/f747cc77-42c4-4dd1-8d76-b6739325bc37" alt="Victoria">
+  <img src="https://github.com/daniloop404/MisteryObjectQuest/assets/142755776/f747cc77-42c4-4dd1-8d76-b6739325bc37" alt="Victoria" width="400">
 </div>
 
 ### Zog
@@ -70,7 +72,7 @@ Esto iniciará el servidor de desarrollo de Expo. Puedes escanear el código QR 
 * Zog es un amigable alienígena varado en la Tierra tras un experimento fallido. Agradecido por la hospitalidad humana, intenta adaptarse a su nuevo hogar con ayuda de Victoria.
 
 <div align="center">
-  <img src="https://github.com/daniloop404/MisteryObjectQuest/assets/142755776/1df26b52-f330-4f63-81fd-37098576570e" alt="Zog">
+  <img src="https://github.com/daniloop404/MisteryObjectQuest/assets/142755776/1df26b52-f330-4f63-81fd-37098576570e" alt="Zog" width="400">
 </div>
 
 
