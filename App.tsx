@@ -8,7 +8,8 @@ import GameScreen from './src/screens/GameScreen';
 import GameMenuScreen from './src/screens/GameMenuScreen';
 import CharacterSelectionScreen from './src/screens/CharacterSelectionScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import { RootStackParamList } from './src/constants/types'; // Asegúrate de que esta ruta es correcta
+import LeaderboardScreen from './src/screens/LeaderboardScreen';
+import { RootStackParamList } from './src/constants/types';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { useLoadFonts } from './src/constants/fonts';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
@@ -49,6 +50,7 @@ const GameStackNavigator = () => (
     <RootStack.Screen name="GameScreen" component={GameScreen} />
     <RootStack.Screen name="CharacterSelection" component={CharacterSelectionScreen} />
     <RootStack.Screen name="Profile" component={ProfileScreen} />
+    <RootStack.Screen name="Leaderboard" component={LeaderboardScreen} />
   </RootStack.Navigator>
 );
 
@@ -79,12 +81,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff', // Ajusta el color de fondo según tu diseño
+    backgroundColor: '#ffffff',
   },
   splashImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain', // Ajusta esta propiedad según tu diseño
+    resizeMode: 'contain',
   },
 });
 

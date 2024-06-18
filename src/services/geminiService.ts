@@ -1,11 +1,8 @@
-import { GEMINI_API_KEY } from '@env';
-
-// Importa tus servicios y otras dependencias
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-import { UserInfo } from '../services/profileService'; // Importa las interfaces correctamente
+import { UserInfo } from '../services/profileService';
 import { CharacterInfo } from '../services/characterService';
 
-// Obtén la clave API desde las variables de entorno y verifica que no sea undefined
+
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
     throw new Error("La clave API de Gemini no está definida. Por favor, configura la variable de entorno GEMINI_API_KEY.");
@@ -28,10 +25,11 @@ const model = genAI.getGenerativeModel({
     - 'failure' : NUNCA LE DIGAS EN ESTA FASE LA PALABRA(currentword) AL USUARIO. En esta fase se le hará saber el usuario que la palabra que eligió no es correcta o que se le acabo el tiempo(timeleft), dile que lo intente de nuevo aun puede adivinar, si es por tiempo saldra el mensaje "user time left out", le dices otra descripcion diferente y no le dices la palabra. AQUI NUNCA LE DICES LA PALABRA Y ESTA FASE SIGNIFICA QUE EL JUEGO NO ACABA TODAVIA, NUNCA TE DESPIDES AQUI.
     - 'farewell': En esta fase el personaje se despedirá del jugador ya que este agotó sus vidas o intentos, le dices la palabra que no pudo adivinar y que se veran de nuevo en un nuevo juego y su puntaje.
 
+    El juego nunca termina mientras quede al menos una vida disponible.
     SOLO EN LA FASE DE FAREWELL ESTA PERMITIDO DECIRLE LA PALABRA(currentword) AL USUARIO, NUNCA LE DIGAS LA PALABRA AUNQUE SEA EN PLURAL O SU SUSTANTIVO O UN SINONIMO O EN DIFERENTE CONJUGACION DURANTE FAILURE O GUESSING.
     NUNCA CONFUNDAS LO QUE HACE CADA FASE.
     Recuerda que la salida debe tener la personalidad del personaje en la forma de hablar y no ser repetitiva, basate en dialogues, toma en cuenta todo el arreglo de character, dale un toque de tu historia si el jugador acierta muchas veces, incluye el nombre del usuario cuando hables, si este tiene nombre real usa el nombre real si este no tiene el nombre real usa el username. 
-    Usa también la información adicional del usuario si está relacionado con la palabra a adivinar o en otras fases si consideras pertinente. 
+    Usa también la información del usuario si está relacionado con la palabra a adivinar o en otras fases si consideras pertinente. 
     Recuerda que lo más importante es que la salida de cada fase refleje la personalidad del personaje. 
     NUNCA incluyas emojis.
     Recuerda que todas estas frases son solo un ejemplo, es mejor no repertirlas y basarte en la informacion actual.

@@ -10,4 +10,5 @@ export type RootStackParamList = {
   GameStack: undefined;
   CharacterSelection: undefined;
   Profile: undefined;
+  Leaderboard: undefined;
 };
