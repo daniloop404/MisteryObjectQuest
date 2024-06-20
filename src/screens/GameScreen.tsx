@@ -8,7 +8,7 @@ import GameStats from '../components/game/GameStats';
 import PlayerResponse from '../components/game/PlayerResponse';
 import GameProvider, { useGameContext } from '../context/GameContext'; 
 import { getUserProfile, UserInfo } from '../services/profileService';
-
+import CustomModal from '../components/CustomModal';
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
 const GameScreen: React.FC = () => {
@@ -17,7 +17,6 @@ const GameScreen: React.FC = () => {
   const route = useRoute<GameScreenRouteProp>();
   const { character } = route.params;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  
   const StartGameComponent = () => {
     const { startGreeting } = useGameContext(); // Ahora puedes usar useGameContext() aquí
 
@@ -27,7 +26,48 @@ const GameScreen: React.FC = () => {
 
     return null; // Este componente no renderiza nada, solo inicia el juego
   };
-  
+  const handleNavigateToCharacterSelection = () => {
+    navigation.navigate('CharacterSelection');
+    };
+  const GameContent = () => {
+    const { error, clearError, startGreeting } = useGameContext();
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+      startGreeting(); 
+    }, []);
+
+    useEffect(() => {
+      if (error) {
+        setErrorMessage(error);
+        setShowErrorModal(true);
+      }
+    }, [error]);
+
+    const handleCloseErrorModal = () => {
+      setShowErrorModal(false);
+      clearError(); 
+    };
+
+    return (
+      <>
+        {/* Resto de tu contenido dentro de GameScreen: */}
+        <ImageBackground
+          // ...
+        >
+          {/* ... */}
+          <CustomModal
+            visible={showErrorModal}
+            message={errorMessage}
+            onClose={handleCloseErrorModal}
+            onModalClose={handleNavigateToCharacterSelection}
+          />
+        </ImageBackground>
+      </>
+    );
+  };
+
   useEffect(() => {
     const loadCharacter = async () => {
       try {
@@ -59,7 +99,7 @@ const GameScreen: React.FC = () => {
 
   return (
     <GameProvider character={character} user={userProfile} navigation={navigation}>
-      {!isLoading && <StartGameComponent />}
+      {!isLoading && <StartGameComponent /> && <GameContent />}
       <ImageBackground
         source={{ uri: character.image }}
         style={styles.container}

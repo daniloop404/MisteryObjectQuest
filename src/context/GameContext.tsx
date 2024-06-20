@@ -10,21 +10,22 @@ import WordsService from '../services/WordsService';
 type GamePhase = 'loading' | 'greeting' | 'guessing' | 'checking' | 'success' | 'failure' | 'farewell';
 
 interface GameContextType {
-    output: string;
-    lives: number;
-    score: number;
-    timeRemaining: number;
-    phase: GamePhase;
-    startGame: () => void;
-    startNewGame: () => void;
-    startGreeting: () => void;
-    startGuessing: () => void;
-    startChecking: (userGuess: string) => void;
-    handleSuccess: (userGuess: string) => Promise<void>;
-    handleFailure: (timeout?: boolean, userWord?: string) => void;
-    navigation: NavigationProp<RootStackParamList>; // Añadir esto
-  }
-  
+  output: string;
+  lives: number;
+  score: number;
+  timeRemaining: number;
+  phase: GamePhase;
+  error: string | null;
+  startGame: () => void;
+  startNewGame: () => void;
+  startGreeting: () => void;
+  startGuessing: () => void;
+  startChecking: (userGuess: string) => void;
+  handleSuccess: (userGuess: string) => Promise<void>;
+  handleFailure: (timeout?: boolean, userWord?: string) => void;
+  navigation: NavigationProp<RootStackParamList>;
+  clearError: () => void; // Añadir esto
+}
 
 interface Props {
   children: React.ReactNode;
@@ -50,11 +51,13 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
   const [timeRemaining, setTimeRemaining] = useState(20);
   const [phase, setPhase] = useState<GamePhase>('loading');
   const [output, setOutput] = useState('');
+  const [error, setError] = useState<string | null>(null); // Añadir estado de error
   const [currentWord, setCurrentWord] = useState('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
   const [geminiService, setGeminiService] = useState<GeminiService | null>(null);
   const [isGeminiServiceReady, setIsGeminiServiceReady] = useState(false);
-  const farewellTimeoutRef = useRef<NodeJS.Timeout | null>(null); 
+  const farewellTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const initializeGeminiService = async () => {
       if (character && user) {
@@ -87,7 +90,7 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
   
     return `${hours12}:${minutes} ${ampm}`;
   };
-  
+
   useEffect(() => {
     let id: NodeJS.Timeout | null = null;
 
@@ -117,12 +120,14 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
 
   const startGame = () => {
     setPhase('loading');
+    setError(null); // Resetear el error al iniciar el juego
     setTimeout(() => startGreeting(), 0);
   };
 
   const startNewGame = () => {
     setLives(3);
     setScore(0);
+    setError(null); // Resetear el error al iniciar un nuevo juego
     startGreeting();
   };
 
@@ -150,6 +155,9 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       console.log('se inicio el greeting');
     } catch (error) {
       console.error("Error en startGreeting:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      }// Actualizar el estado de error
       console.log('el greeting fallo');
     }
   };
@@ -183,6 +191,9 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       console.log('Fase actual: guessing');
     } catch (error) {
       console.error("Error en startGuessing:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      } // Actualizar el estado de error
     }
   };
 
@@ -213,6 +224,9 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       }
     } catch (error) {
       console.error("Error en startChecking:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      } // Actualizar el estado de error
     }
   };
 
@@ -246,6 +260,9 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
 
     } catch (error) {
       console.error("Error en handleSuccess:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      } // Actualizar el estado de error
       // Manejar el error adecuadamente, por ejemplo, volviendo a la fase 'guessing'
       startGuessing();
     }
@@ -287,6 +304,9 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       return farewellTimeoutRef;
     } catch (error) {
       console.error("Error en startFarewell:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      }// Actualizar el estado de error
     }
   };
 
@@ -340,10 +360,14 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
       console.log('Fase actual: failure');
     } catch (error) {
       console.error("Error en handleFailure:", error);
+      if (error instanceof Error) {
+        setError("Error en handleFailure: " + error.message); // Guardar el mensaje de error
+      }// Actualizar el estado de error
     }
   };
-
-
+  const clearError = () => {
+    setError(null);
+  };
 
   const contextValue: GameContextType = {
     lives,
@@ -351,6 +375,7 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
     timeRemaining,
     phase,
     output,
+    error,
     startGame,
     startNewGame,
     startGreeting,
@@ -358,7 +383,8 @@ const GameProvider: React.FC<Props & { navigation: NavigationProp<RootStackParam
     startChecking,
     handleSuccess,
     handleFailure,
-    navigation, // Añadir esto
+    navigation,
+    clearError, // Añadir esto
   };
 
   return (

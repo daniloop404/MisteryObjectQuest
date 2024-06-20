@@ -7,6 +7,7 @@ interface CustomModalProps {
   onClose: () => void;
   onTimeout?: () => void;
   timeoutDuration?: number; // Tiempo en milisegundos
+  onModalClose?: () => void; // Nueva prop para manejar acciones al cerrar
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ 
@@ -14,7 +15,8 @@ const CustomModal: React.FC<CustomModalProps> = ({
   message, 
   onClose, 
   onTimeout, 
-  timeoutDuration = 5000 // Valor por defecto 5 segundos
+  timeoutDuration = 5000,
+  onModalClose // Nueva prop
 }) => {
 
   useEffect(() => {
@@ -29,11 +31,14 @@ const CustomModal: React.FC<CustomModalProps> = ({
 
   return (
     <Modal
-      transparent={true}
-      animationType="slide"
-      visible={visible}
-      onRequestClose={onClose}
-    >
+    transparent={true}
+    animationType="slide"
+    visible={visible}
+    onRequestClose={() => { 
+      onClose(); 
+      if (onModalClose) onModalClose(); // Llama a la función al cerrar
+    }}
+  >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalText}>{message}</Text>
